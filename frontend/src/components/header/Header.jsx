@@ -1,5 +1,5 @@
 import './header.scss';
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
@@ -12,11 +12,11 @@ const Header = () => {
 				</div>
 				<div className="right">
 					<ul>
-						{/* <Link to={'/'} style={{ textDecoration: 'none' }}>
+						<Link to={'/'} style={{ textDecoration: 'none' }}>
 							<li className="item">Home</li>
 						</Link>
 						<div class="vl"></div>
-						<Link to={'/shop/all'} style={{ textDecoration: 'none' }}>
+						<Link to={'/shop'} style={{ textDecoration: 'none' }}>
 							<li className="item">Shop</li>
 						</Link>
 						<div class="vl"></div>
@@ -26,15 +26,7 @@ const Header = () => {
 						<div class="vl"></div>
 						<Link to={'/contact'} style={{ textDecoration: 'none' }}>
 							<li className="item">Contact</li>
-						</Link> */}
-
-						<li className="item">Home</li>
-						<div class="vl"></div>
-						<li className="item">Shop</li>
-						<div class="vl"></div>
-						<li className="item">About Us</li>
-						<div class="vl"></div>
-						<li className="item">Contact</li>
+						</Link>
 					</ul>
 					<div className="search">
 						<input type="text" placeholder="Search" />

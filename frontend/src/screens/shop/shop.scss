@@ -1,0 +1,55 @@
+.shop {
+	.shop-container {
+		margin: 50px 200px;
+		display: grid;
+		grid-template-columns: 1fr 3fr;
+
+		.filters {
+			.categories {
+				padding-bottom: 30px;
+				ul {
+					list-style: none;
+
+					li {
+						display: flex;
+
+						.icon {
+							font-size: 20px;
+							padding-right: 15px;
+						}
+					}
+				}
+			}
+
+			.price-range {
+				padding-bottom: 30px;
+			}
+
+			.colors {
+				padding-bottom: 30px;
+			}
+
+			.brand {
+				padding-bottom: 30px;
+				ul {
+					list-style: none;
+
+					li {
+						display: flex;
+
+						.icon {
+							font-size: 20px;
+							padding-right: 15px;
+						}
+					}
+				}
+			}
+		}
+
+		.products {
+			display: flex;
+			gap: 20px;
+			flex-wrap: wrap;
+		}
+	}
+}

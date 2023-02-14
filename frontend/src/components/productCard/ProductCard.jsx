@@ -1,4 +1,5 @@
 import './productCard.scss';
+import { Link } from 'react-router-dom';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Rating } from '@mui/material';
 
@@ -7,11 +8,21 @@ const ProductCard = ({ product }) => {
 		<div>
 			<div className="cards">
 				<div className="card" key={product._id}>
-					<div className="image">
+					<Link
+						to={`/product/${product._id}`}
+						style={{ textDecoration: 'none' }}
+						className="image"
+					>
 						<img src={product.image} alt="" />
-					</div>
+					</Link>
 					<div className="fRow">
-						<div className="name">{product.name}</div>
+						<Link
+							to={`/product/${product._id}`}
+							style={{ textDecoration: 'none', color: 'black' }}
+							className="name"
+						>
+							{product.name}
+						</Link>
 						<ShoppingCartOutlinedIcon className="cart" />
 					</div>
 
