@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.grid-container {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	margin: 60px 200px;
+	gap: 10px;
+	grid-template-rows: 800px;
+
+	.first {
+		background: linear-gradient(rgba(22, 22, 22, 0.3), rgba(22, 22, 22, 0.4)),
+			url('https://images.pexels.com/photos/52518/jeans-pants-blue-shop-52518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+		background-repeat: no-repeat;
+		background-size: cover;
+
+		.text {
+			padding-left: 300px;
+			padding-top: 100px;
+
+			.small {
+				color: white;
+				font-size: 28px;
+				font-family: 'Montserrat';
+				font-weight: 500;
+			}
+
+			.extra-small {
+				color: white;
+				font-size: 18px;
+				font-family: 'Montserrat';
+				font-weight: 600;
+			}
+
+			.big {
+				color: white;
+				font-size: 56px;
+				font-family: 'Montserrat';
+				font-weight: bold;
+			}
+		}
+	}
+
+	.second-container {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 10px;
+
+		.second {
+			background: linear-gradient(rgba(22, 22, 22, 0.3), rgba(22, 22, 22, 0.4)),
+				url('https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+			background-repeat: no-repeat;
+			background-size: cover;
+			grid-column: span 2;
+
+			.text {
+				padding-top: 60px;
+				padding-left: 40px;
+
+				.small {
+					color: white;
+					font-size: 28px;
+					font-family: 'Montserrat';
+					font-weight: 500;
+				}
+
+				.medium {
+					color: white;
+					font-size: 34px;
+					font-family: 'Montserrat';
+					font-weight: 600;
+				}
+
+				.big {
+					color: white;
+					font-size: 56px;
+					font-family: 'Montserrat';
+					font-weight: bold;
+				}
+			}
+		}
+
+		.third {
+			background: linear-gradient(rgba(22, 22, 22, 0.3), rgba(22, 22, 22, 0.4)),
+				url('https://images.pexels.com/photos/380782/pexels-photo-380782.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			.text {
+				padding-top: 60px;
+				padding-left: 40px;
+
+				.small {
+					color: white;
+					font-size: 28px;
+					font-family: 'Montserrat';
+					font-weight: 500;
+				}
+
+				.medium {
+					color: white;
+					font-size: 34px;
+					font-family: 'Montserrat';
+					font-weight: 600;
+				}
+
+				.big {
+					color: white;
+					font-size: 56px;
+					font-family: 'Montserrat';
+					font-weight: bold;
+				}
+			}
+		}
+
+		.fourth {
+			background: linear-gradient(rgba(22, 22, 22, 0.3), rgba(22, 22, 22, 0.4)),
+				url('https://images.pexels.com/photos/4429100/pexels-photo-4429100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+			background-repeat: no-repeat;
+			background-size: cover;
+			grid-column: span 3;
+
+			.text {
+				padding-top: 50px;
+				padding-left: 700px;
+				.small {
+					color: white;
+					font-size: 28px;
+					font-family: 'Montserrat';
+					font-weight: 500;
+				}
+
+				.medium {
+					color: white;
+					font-size: 34px;
+					font-family: 'Montserrat';
+					font-weight: 600;
+				}
+
+				.big {
+					color: white;
+					font-size: 56px;
+					font-family: 'Montserrat';
+					font-weight: bold;
+				}
+			}
+		}
+	}
+}

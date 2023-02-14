@@ -1,5 +1,5 @@
 import './header.scss';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
