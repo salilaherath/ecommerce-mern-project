@@ -1,0 +1,37 @@
+.gheader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
+  height: 50px;
+  padding: 0 200px 0 200px;
+
+  .inquiries {
+    flex: 1;
+
+    span {
+      font-weight: 500;
+    }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .vl {
+      border-left: 1px solid gray;
+      height: 25px;
+    }
+
+    .login {
+      margin-right: 10px;
+      cursor: pointer;
+      color: black;
+    }
+
+    .currency {
+      margin-left: 10px;
+    }
+  }
+}
