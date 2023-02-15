@@ -1,9 +1,7 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './shop.scss';
-import products from '../../products';
 import ProductCard from '../../components/productCard/ProductCard';
-
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -25,6 +23,17 @@ function valuetext(value) {
 }
 
 const Shop = () => {
+	const [products, setProducts] = useState([]);
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			const { data } = await axios.get('/api/products');
+
+			setProducts(data);
+		};
+		fetchProducts();
+	}, []);
+
 	const [value, setValue] = React.useState([1000, 5000]);
 
 	const handleChange = (event, newValue) => {
@@ -194,7 +203,7 @@ const Shop = () => {
 
 				<div className="products">
 					{products.map((product) => (
-						<ProductCard product={product} />
+						<ProductCard product={product} key={product._id} />
 					))}
 					{/* <Products cat={cat} filters={filters} sort={sort} /> */}
 				</div>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './productDetails.scss';
 import { Link, useParams } from 'react-router-dom';
-import products from '../../products';
 import { Rating } from '@mui/material';
 import styled from 'styled-components';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -21,8 +21,18 @@ const Filter = styled.div`
 `;
 
 const ProductDetails = () => {
+	const [product, setProduct] = useState({});
+
 	const { id } = useParams();
-	const product = products.find((p) => p._id === id);
+
+	useEffect(() => {
+		const fetchProduct = async () => {
+			const { data } = await axios.get(`/api/products/${id}`);
+
+			setProduct(data);
+		};
+		fetchProduct();
+	}, [id]);
 
 	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState('');
@@ -73,7 +83,7 @@ const ProductDetails = () => {
 				</div>
 
 				<div className="details">
-					<div className="title">Jogger Pant</div>
+					<div className="title">{product.name}</div>
 					<div className="stock">
 						{product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
 					</div>

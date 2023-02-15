@@ -1,8 +1,20 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './newArrivals.scss';
-import products from '../../products';
 import ProductCard from '../productCard/ProductCard';
 
 const NewArrivals = () => {
+	const [products, setProducts] = useState([]);
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			const { data } = await axios.get('/api/products');
+
+			setProducts(data);
+		};
+		fetchProducts();
+	}, []);
+
 	return (
 		<div>
 			<div className="newArrival">
@@ -18,7 +30,7 @@ const NewArrivals = () => {
 				<div className="hl"></div>
 				<div className="products">
 					{products.map((product) => (
-						<ProductCard product={product} />
+						<ProductCard product={product} key={product._id} />
 					))}
 				</div>
 			</div>
