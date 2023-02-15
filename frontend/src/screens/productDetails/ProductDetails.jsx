@@ -96,22 +96,19 @@ const ProductDetails = () => {
 					<div className="hl"></div>
 					<div className="sizeText">Size</div>
 					<div className="sizeBtn">
-						{/* {product.size?.map((s) => (
+						{product.size?.map((s) => (
 							<div key={s} onClick={() => setSize(s)}>
 								{s}
 							</div>
-						))} */}
+						))}
 					</div>
 					<div className="colorText">Color</div>
 					<div className="color">
 						<Filter>
-							<FilterColor color="red" />
+							{product.color?.map((c) => (
+								<FilterColor color={c} key={c} onClick={() => setColor(c)} />
+							))}
 						</Filter>
-						{/* <Filter>
-              {product.color?.map((c) => (
-                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
-              ))}
-            </Filter> */}
 					</div>
 					<div className="description">
 						<div className="text">Product Details</div>
