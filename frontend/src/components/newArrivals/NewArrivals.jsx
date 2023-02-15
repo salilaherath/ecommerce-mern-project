@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './newArrivals.scss';
 import ProductCard from '../productCard/ProductCard';
 import { listProducts } from '../../actions/productActions';
+import { CircularProgress } from '@mui/material';
 
 const NewArrivals = () => {
 	const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const NewArrivals = () => {
 				</div>
 				<div className="hl"></div>
 				{loading ? (
-					<h2>Loading...</h2>
+					<CircularProgress />
 				) : error ? (
 					<h3>{error}</h3>
 				) : (

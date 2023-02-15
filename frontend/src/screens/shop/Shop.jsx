@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { listProducts } from '../../actions/productActions';
+import { CircularProgress } from '@mui/material';
 
 const theme = createTheme({
 	palette: {
@@ -201,7 +202,7 @@ const Shop = () => {
 				</div>
 
 				{loading ? (
-					<h2>Loading...</h2>
+					<CircularProgress />
 				) : error ? (
 					<h3>{error}</h3>
 				) : (
