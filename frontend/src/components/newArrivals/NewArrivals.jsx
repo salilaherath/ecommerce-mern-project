@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import './newArrivals.scss';
 import ProductCard from '../productCard/ProductCard';
+import { listProducts } from '../../actions/productActions';
 
 const NewArrivals = () => {
-	const [products, setProducts] = useState([]);
+	const dispatch = useDispatch();
+
+	const productList = useSelector((state) => state.productList);
+	const { loading, error, products } = productList;
 
 	useEffect(() => {
-		const fetchProducts = async () => {
-			const { data } = await axios.get('/api/products');
-
-			setProducts(data);
-		};
-		fetchProducts();
-	}, []);
+		dispatch(listProducts());
+	}, [dispatch]);
 
 	return (
 		<div>
@@ -28,11 +27,17 @@ const NewArrivals = () => {
 					</ul>
 				</div>
 				<div className="hl"></div>
-				<div className="products">
-					{products.map((product) => (
-						<ProductCard product={product} key={product._id} />
-					))}
-				</div>
+				{loading ? (
+					<h2>Loading...</h2>
+				) : error ? (
+					<h3>{error}</h3>
+				) : (
+					<div className="products">
+						{products.map((product) => (
+							<ProductCard product={product} key={product._id} />
+						))}
+					</div>
+				)}
 			</div>
 		</div>
 	);
