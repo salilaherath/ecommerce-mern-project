@@ -11,7 +11,6 @@ const products = [
 		countInStock: 10,
 		rating: 4.5,
 		numReviews: 12,
-		size: [{ size: 'L' }, { size: 'XL' }],
 	},
 	{
 		_id: '2',
@@ -25,7 +24,6 @@ const products = [
 		countInStock: 7,
 		rating: 4.0,
 		numReviews: 8,
-		size: [{ size: 'M' }, { size: 'XL' }],
 	},
 	{
 		_id: '3',
@@ -39,7 +37,6 @@ const products = [
 		countInStock: 5,
 		rating: 3,
 		numReviews: 12,
-		size: [{ size: 'M' }, { size: 'L' }],
 	},
 	{
 		_id: '4',
@@ -53,7 +50,6 @@ const products = [
 		countInStock: 11,
 		rating: 5,
 		numReviews: 12,
-		size: [{ size: 'XL' }],
 	},
 	{
 		_id: '5',
@@ -67,7 +63,6 @@ const products = [
 		countInStock: 7,
 		rating: 3.5,
 		numReviews: 10,
-		size: [{ size: 'L' }],
 	},
 	{
 		_id: '6',
@@ -81,7 +76,6 @@ const products = [
 		countInStock: 0,
 		rating: 4,
 		numReviews: 12,
-		size: [{ size: 'L' }, { size: 'XL' }],
 	},
 ];
 
