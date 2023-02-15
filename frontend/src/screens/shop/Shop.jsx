@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import './shop.scss';
 import ProductCard from '../../components/productCard/ProductCard';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { listProducts } from '../../actions/productActions';
 
 const theme = createTheme({
 	palette: {
@@ -23,16 +24,14 @@ function valuetext(value) {
 }
 
 const Shop = () => {
-	const [products, setProducts] = useState([]);
+	const dispatch = useDispatch();
+
+	const productList = useSelector((state) => state.productList);
+	const { loading, error, products } = productList;
 
 	useEffect(() => {
-		const fetchProducts = async () => {
-			const { data } = await axios.get('/api/products');
-
-			setProducts(data);
-		};
-		fetchProducts();
-	}, []);
+		dispatch(listProducts());
+	}, [dispatch]);
 
 	const [value, setValue] = React.useState([1000, 5000]);
 
@@ -201,12 +200,19 @@ const Shop = () => {
 					</div>
 				</div>
 
-				<div className="products">
-					{products.map((product) => (
-						<ProductCard product={product} key={product._id} />
-					))}
-					{/* <Products cat={cat} filters={filters} sort={sort} /> */}
-				</div>
+				{loading ? (
+					<h2>Loading...</h2>
+				) : error ? (
+					<h3>{error}</h3>
+				) : (
+					<div className="products">
+						{products.map((product) => (
+							<ProductCard product={product} key={product._id} />
+						))}
+					</div>
+				)}
+
+				{/* <Products cat={cat} filters={filters} sort={sort} /> */}
 			</div>
 		</div>
 	);
