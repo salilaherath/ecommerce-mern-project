@@ -23,13 +23,16 @@ const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const { cartItems, isLoading, isError } = cart;
 
-	console.log(cartItems);
-
 	useEffect(() => {
 		if (proID) {
 			dispatch(addToCart(ob));
 		}
 	}, [dispatch, proID, qty]);
+
+	const removeFromCartHandler = (id) => {
+		console.log('remove');
+		dispatch(removeFromCart(id));
+	};
 
 	return (
 		<div className="cart-page">
@@ -69,7 +72,7 @@ const Cart = () => {
 										</div>
 										<h3>Rs. {item.price * item.qty}.00</h3>
 									</div>
-									<Delete />
+									<Delete onClick={() => removeFromCartHandler(item.product)} />
 								</div>
 							))}
 						</div>
@@ -93,8 +96,12 @@ const Cart = () => {
 							<table>
 								<tr>
 									<td>Subtotal</td>
-									{/* <td>Rs. {cart.total}.00</td> */}
-									<td>Rs. 3400.00</td>
+									<td>
+										Rs.
+										{cartItems
+											.reduce((acc, item) => acc + item.qty * item.price, 0)
+											.toFixed(2)}
+									</td>
 								</tr>
 								<tr>
 									<td>Discounts</td>
@@ -103,7 +110,12 @@ const Cart = () => {
 								<tr className="total">
 									<td>Total</td>
 									{/* <td>Rs. {cart.total}.00</td> */}
-									<td>Rs. 3400.00</td>
+									<td>
+										Rs.
+										{cartItems
+											.reduce((acc, item) => acc + item.qty * item.price, 0)
+											.toFixed(2)}
+									</td>
 								</tr>
 							</table>
 							{/* <StripeCheckout
@@ -118,6 +130,7 @@ const Cart = () => {
                 currency='LKR'>
                 <button className='checkout-btn'>CHECKOUT NOW</button>
               </StripeCheckout> */}
+							<button className="checkout-btn">CHECKOUT NOW</button>
 						</div>
 					</div>
 				</div>
