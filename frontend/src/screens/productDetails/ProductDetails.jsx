@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './productDetails.scss';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import styled from 'styled-components';
 import { CircularProgress } from '@mui/material';
@@ -23,6 +23,7 @@ const Filter = styled.div`
 `;
 
 const ProductDetails = () => {
+	const [quantity, setQuantity] = useState(1);
 	const dispatch = useDispatch();
 
 	const productDetails = useSelector((state) => state.productDetails);
@@ -34,7 +35,6 @@ const ProductDetails = () => {
 		dispatch(listProductDetails(id));
 	}, [dispatch, id]);
 
-	const [quantity, setQuantity] = useState(1);
 	const [color, setColor] = useState('');
 	const [size, setSize] = useState('');
 	//const dispatch = useDispatch();
@@ -57,8 +57,10 @@ const ProductDetails = () => {
 		}
 	};
 
+	let navigate = useNavigate();
+
 	const handleClick = () => {
-		//dispatch(addProduct({ ...product, quantity, color, size }));
+		navigate(`/cart/${id}?qty=${quantity}?color=${color}?size=${size}`);
 	};
 
 	return (
@@ -125,15 +127,18 @@ const ProductDetails = () => {
 								<div className="para">{product.description}</div>
 							</div>
 							<div className="hl"></div>
-							<div className="quantity">
-								<div className="dec" onClick={() => handleQuantity('dec')}>
-									-
+
+							{product.countInStock > 0 && (
+								<div className="quantity">
+									<div className="dec" onClick={() => handleQuantity('dec')}>
+										-
+									</div>
+									<div className="quan">{quantity}</div>
+									<div className="inc" onClick={() => handleQuantity('inc')}>
+										+
+									</div>
 								</div>
-								<div className="quan">{quantity}</div>
-								<div className="inc" onClick={() => handleQuantity('inc')}>
-									+
-								</div>
-							</div>
+							)}
 							<div className="addToCartBtn">
 								<button onClick={handleClick}>
 									<ShoppingCartOutlinedIcon className="icon" />{' '}
