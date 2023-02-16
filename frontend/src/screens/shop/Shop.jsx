@@ -6,7 +6,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { listProducts } from '../../actions/productActions';
+//import { listProducts } from '../../actions/productActions';
+import { listProducts } from '../../features/products/productListDataSlice';
 import { CircularProgress } from '@mui/material';
 
 const theme = createTheme({
@@ -28,7 +29,7 @@ const Shop = () => {
 	const dispatch = useDispatch();
 
 	const productList = useSelector((state) => state.productList);
-	const { loading, error, products } = productList;
+	const { isLoading, isError, products, isSuccess, message } = productList;
 
 	useEffect(() => {
 		dispatch(listProducts());
@@ -201,10 +202,10 @@ const Shop = () => {
 					</div>
 				</div>
 
-				{loading ? (
+				{isLoading ? (
 					<CircularProgress />
-				) : error ? (
-					<h3>{error}</h3>
+				) : isError ? (
+					<h3>{Error}</h3>
 				) : (
 					<div className="products">
 						{products.map((product) => (

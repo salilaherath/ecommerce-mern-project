@@ -6,7 +6,9 @@ import { Rating } from '@mui/material';
 import styled from 'styled-components';
 import { CircularProgress } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { listProductDetails } from '../../actions/productActions';
+//import { listProductDetails } from '../../actions/productActions';
+//import { addToCart } from '../../actions/cartActions';
+import { listProduct } from '../../features/products/productDataSlice';
 
 const FilterColor = styled.div`
 	width: 50px;
@@ -23,16 +25,18 @@ const Filter = styled.div`
 `;
 
 const ProductDetails = () => {
-	const [quantity, setQuantity] = useState(1);
-	const dispatch = useDispatch();
-
-	const productDetails = useSelector((state) => state.productDetails);
-	const { loading, error, product } = productDetails;
+	const [qty, setQty] = useState(1);
 
 	const { id } = useParams();
 
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	//const productDetails = useSelector((state) => state.productDetails);
+	//const { loading, error, product } = productDetails;
+
 	useEffect(() => {
-		dispatch(listProductDetails(id));
+		dispatch(listProduct(id));
 	}, [dispatch, id]);
 
 	const [color, setColor] = useState('');
@@ -51,24 +55,27 @@ const ProductDetails = () => {
 
 	const handleQuantity = (type) => {
 		if (type === 'dec') {
-			quantity > 1 && setQuantity(quantity - 1);
+			qty > 1 && setQty(qty - 1);
 		} else {
-			setQuantity(quantity + 1);
+			setQty(qty + 1);
 		}
 	};
 
-	let navigate = useNavigate();
+	const { isLoading, isError, product, message } = useSelector(
+		(state) => state.productDetails
+	);
 
 	const handleClick = () => {
-		navigate(`/cart/${id}?qty=${quantity}?color=${color}?size=${size}`);
+		navigate(`/cart/${id}?qty=${qty}`);
+		// navigate(`/cart/${id}?qty=${quantity}?color=${color}?size=${size}`);
 	};
 
 	return (
 		<>
-			{loading ? (
+			{isLoading ? (
 				<CircularProgress />
-			) : error ? (
-				<h3>{error}</h3>
+			) : isError ? (
+				<h3>{Error}</h3>
 			) : (
 				<div className="productDetails">
 					<div className="product">
@@ -133,7 +140,7 @@ const ProductDetails = () => {
 									<div className="dec" onClick={() => handleQuantity('dec')}>
 										-
 									</div>
-									<div className="quan">{quantity}</div>
+									<div className="quan">{qty}</div>
 									<div className="inc" onClick={() => handleQuantity('inc')}>
 										+
 									</div>

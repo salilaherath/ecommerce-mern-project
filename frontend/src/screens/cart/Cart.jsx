@@ -1,81 +1,79 @@
 import './cart.scss';
-import { useSelector } from 'react-redux';
+import {
+	Link,
+	useParams,
+	useSearchParams,
+	useNavigate,
+} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 //import { userRequest } from '../../requestMethods';
-import { useNavigate } from 'react-router-dom';
+//import { addToCart } from '../../actions/cartActions';
+import { addToCart, removeFromCart } from '../../features/cart/cartDataSlice';
+import Delete from '@mui/icons-material/Delete';
 
 const Cart = () => {
 	// const [products, setProducts] = useState();
+	const { id: proID } = useParams();
+	const [searchParams] = useSearchParams();
+	const qty = searchParams.get('qty');
+	const ob = { id: proID, qty: qty };
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const cart = useSelector((state) => state.cart);
+	const { cartItems, isLoading, isError } = cart;
+
+	console.log(cartItems);
+
+	useEffect(() => {
+		if (proID) {
+			dispatch(addToCart(ob));
+		}
+	}, [dispatch, proID, qty]);
 
 	return (
 		<div className="cart-page">
 			<div className="cart">
 				<h2>CART</h2>
 				<div className="section">
-					<div className="left-section">
-						<div className="container">
-							{/* <img src={products[0].img} alt="" /> */}
-							<div className="details">
-								<p>
-									<span>Product: </span>
-									{/* {products[0].title} */}
-								</p>
-								<p>
-									<span>ID: </span>
-									{/* {products[0].id} */}
-								</p>
-								<p>
-									<span>Color: </span>
-									{/* {products[0].color} */}
-								</p>
-								<p>
-									<span>Size: </span>
-									{/* {products[0].size} */}
-								</p>
-							</div>
-							<div className="right">
-								<div className="quantity">
-									<div className="dec">-</div>
-									<div className="quan">{/* {products[0].quantity} */}</div>
-									<div className="inc">+</div>
+					{cartItems.length === 0 ? (
+						<h3>Your cart is empty!</h3>
+					) : (
+						<div className="left-section">
+							{cartItems.map((item) => (
+								<div className="container" key={item.product}>
+									<img src={item.image} alt={item.name} />
+									<div className="details">
+										<p>
+											<span>Product: </span>
+											{item.name}
+										</p>
+										<p>
+											<span>ID: </span>
+											{item.product}
+										</p>
+										<p>
+											<span>Color: </span>
+											{item.color}
+										</p>
+										<p>
+											<span>Size: </span>
+											{item.size}
+										</p>
+									</div>
+									<div className="right">
+										<div className="quantity">
+											<div className="dec">-</div>
+											<div className="quan">{item.qty}</div>
+											<div className="inc">+</div>
+										</div>
+										<h3>Rs. {item.price * item.qty}.00</h3>
+									</div>
+									<Delete />
 								</div>
-								<h3>
-									{/* Rs. {products[0].price * products[0].quantity}.00 */}
-								</h3>
-							</div>
+							))}
 						</div>
-						{/* {cart.products.map((product) => (
-              <div className='container'>
-                <img src={product.img} alt='' />
-                <div className='details'>
-                  <p>
-                    <span>Product: </span>
-                    {product.title}
-                  </p>
-                  <p>
-                    <span>ID: </span>
-                    {product._id}
-                  </p>
-                  <p>
-                    <span>Color: </span>
-                    {product.color}
-                  </p>
-                  <p>
-                    <span>Size: </span>
-                    {product.size}
-                  </p>
-                </div>
-                <div className='right'>
-                  <div className='quantity'>
-                    <div className='dec'>-</div>
-                    <div className='quan'>{product.quantity}</div>
-                    <div className='inc'>+</div>
-                  </div>
-                  <h3>Rs. {product.price * product.quantity}.00</h3>
-                </div>
-              </div>
-            ))} */}
-					</div>
+					)}
 					<div className="right-section">
 						<div className="voucher">
 							<h2>VOUCHER</h2>

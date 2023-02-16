@@ -2,16 +2,16 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './newArrivals.scss';
 import ProductCard from '../productCard/ProductCard';
-import { listProducts } from '../../actions/productActions';
+//import { listProducts } from '../../actions/productActions';
 import { CircularProgress } from '@mui/material';
-//import { listProducts } from '../../features/products/productListSlice';
+import { listProducts } from '../../features/products/productListDataSlice';
 
 const NewArrivals = () => {
 	const dispatch = useDispatch();
 
 	const productList = useSelector((state) => state.productList);
-	const { loading, error, products } = productList;
-	//const { isLoading, isError, products, isSuccess, message } = productList;
+	//const { loading, error, products } = productList;
+	const { isLoading, isError, products, isSuccess, message } = productList;
 
 	useEffect(() => {
 		dispatch(listProducts());
@@ -30,10 +30,10 @@ const NewArrivals = () => {
 					</ul>
 				</div>
 				<div className="hl"></div>
-				{loading ? (
+				{isLoading ? (
 					<CircularProgress />
-				) : error ? (
-					<h3>{error}</h3>
+				) : isError ? (
+					<h3>{Error}</h3>
 				) : (
 					<div className="products">
 						{products.map((product) => (
