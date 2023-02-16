@@ -20,6 +20,8 @@ const App = () => {
 			<Header />
 			<div className="app">
 				<Routes>
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
 					<Route path="/" element={<Home />} />
 					<Route path="/shop" element={<Shop />} />
 					<Route path="/shop/:category" element={<Shop />} />
@@ -28,8 +30,6 @@ const App = () => {
 					<Route path="/product/:id" element={<ProductDetails />} />
 					<Route path="/cart/" element={<Cart />} />
 					<Route path="/cart/:id?" element={<Cart />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
 				</Routes>
 			</div>
 			<Footer />
