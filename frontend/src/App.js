@@ -8,6 +8,7 @@ import Shop from './screens/shop/Shop';
 import About from './screens/about/About';
 import Contact from './screens/contact/Contact';
 import ProductDetails from './screens/productDetails/ProductDetails';
+import Cart from './screens/cart/Cart';
 
 const App = () => {
 	return (
@@ -22,6 +23,7 @@ const App = () => {
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/product/:id" element={<ProductDetails />} />
+					<Route path="/cart/:id?" element={<Cart />} />
 				</Routes>
 			</div>
 			<Footer />
