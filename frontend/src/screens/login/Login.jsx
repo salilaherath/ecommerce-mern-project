@@ -20,7 +20,6 @@ const Login = ({ onClose }) => {
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<button>Login</button>
-				<button>Login</button>
 				{/* {error && <div className='error'>Something went wrong...</div>} */}
 				<p>
 					Don't have an account? Please, <span>register</span> here!
