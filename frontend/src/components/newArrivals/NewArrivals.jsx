@@ -4,12 +4,14 @@ import './newArrivals.scss';
 import ProductCard from '../productCard/ProductCard';
 import { listProducts } from '../../actions/productActions';
 import { CircularProgress } from '@mui/material';
+//import { listProducts } from '../../features/products/productListSlice';
 
 const NewArrivals = () => {
 	const dispatch = useDispatch();
 
 	const productList = useSelector((state) => state.productList);
 	const { loading, error, products } = productList;
+	//const { isLoading, isError, products, isSuccess, message } = productList;
 
 	useEffect(() => {
 		dispatch(listProducts());
