@@ -2,10 +2,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/users/userLogInDataSlice';
 import { resetWithProfile } from '../../features/users/profileDataSlice';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
+import { Button, Dropdown } from 'antd';
 import './grayHeader.scss';
 
 const GrayHeader = () => {
@@ -16,6 +13,17 @@ const GrayHeader = () => {
 		dispatch(logout());
 		dispatch(resetWithProfile());
 	};
+
+	const items = [
+		{
+			key: '1',
+			label: <p>{userInfo.isAdmin ? 'Dashboard' : 'Profile'}</p>,
+		},
+		{
+			key: '2',
+			label: <p onClick={logoutHandler}>Logout</p>,
+		},
+	];
 	return (
 		<div className="gheader">
 			<div className="inquiries">
@@ -23,21 +31,15 @@ const GrayHeader = () => {
 			</div>
 			<div className="right">
 				{userInfo ? (
-					<FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-						<InputLabel id="demo-simple-select-label">
-							{userInfo.name}
-						</InputLabel>
-						<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
-							label="Age"
-							autoWidth
-						>
-							<MenuItem>Profile</MenuItem>
-							<MenuItem onClick={logoutHandler}>Logout</MenuItem>
-							{/* <MenuItem>Dashboard</MenuItem> */}
-						</Select>
-					</FormControl>
+					<Dropdown
+						menu={{
+							items,
+						}}
+						placement="bottomLeft"
+						arrow
+					>
+						<Button>{userInfo.name}</Button>
+					</Dropdown>
 				) : (
 					<Link
 						to={'/login'}

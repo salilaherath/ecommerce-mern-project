@@ -60,8 +60,8 @@ const dashboardRouter = createBrowserRouter(
 );
 
 const App = () => {
-	// return <RouterProvider router={landingRouter} />;
-	return <RouterProvider router={dashboardRouter} />;
+	return <RouterProvider router={landingRouter} />;
+	// return <RouterProvider router={dashboardRouter} />;
 };
 
 export default App;
