@@ -1,11 +1,10 @@
-import { Box, useTheme, Button } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens } from '../theme';
 import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
-import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 
-const Team = () => {
+const Products = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const columns = [
@@ -17,24 +16,19 @@ const Team = () => {
 			cellClassName: 'name-column--cell',
 		},
 		{
-			field: 'age',
-			headerName: 'Size',
+			field: 'address',
+			headerName: 'Address',
 			headerAlign: 'left',
 			align: 'left',
 		},
 		{
 			field: 'phone',
-			headerName: 'Price (Rs)',
+			headerName: 'Contact No.',
 			flex: 1,
 		},
 		{
-			field: 'image',
-			headerName: 'Image',
-			flex: 1,
-		},
-		{
-			field: 'category',
-			headerName: 'Category',
+			field: 'email',
+			headerName: 'Email',
 			flex: 1,
 		},
 		{
@@ -46,29 +40,9 @@ const Team = () => {
 
 	return (
 		<Box m="20px">
-			<Box display="flex" justifyContent="space-between" alignItems="center">
-				<Header
-					title="PRODUCTS"
-					subtitle="Manage Products of Vintage Clothing"
-				/>
-
-				<Box>
-					<Button
-						sx={{
-							backgroundColor: colors.blueAccent[700],
-							color: colors.grey[100],
-							fontSize: '14px',
-							fontWeight: 'bold',
-							padding: '10px 20px',
-						}}
-					>
-						<DownloadOutlinedIcon sx={{ mr: '10px' }} />
-						Add Products
-					</Button>
-				</Box>
-			</Box>
+			<Header title="PRODUCTS" subtitle="Manage Products of Vintage Clothing" />
 			<Box
-				m="0 0 0 0"
+				m="40px 0 0 0"
 				height="75vh"
 				sx={{
 					'& .MuiDataGrid-root': {
@@ -91,11 +65,11 @@ const Team = () => {
 						borderTop: 'none',
 						backgroundColor: colors.blueAccent[700],
 					},
-					'& .MuiDataGrid-toolbarContainer .MuiButton-text': {
-						color: `${colors.grey[100]} !important`,
-					},
 					'& .MuiCheckbox-root': {
 						color: `${colors.greenAccent[200]} !important`,
+					},
+					'& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+						color: `${colors.grey[100]} !important`,
 					},
 				}}
 			>
@@ -110,4 +84,4 @@ const Team = () => {
 	);
 };
 
-export default Team;
+export default Products;
