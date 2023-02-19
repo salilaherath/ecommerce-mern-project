@@ -19,6 +19,7 @@ import Products from './screens/admin/scenes/Products';
 import Customers from './screens/admin/scenes/Customers';
 import Orders from './screens/admin/scenes/Orders';
 import Charts from './screens/admin/scenes/Charts';
+import AddProducts from './screens/admin/scenes/AddProducts';
 import DashboardLayout from './layouts/DashboardLayout';
 
 const landingRouter = createBrowserRouter(
@@ -50,6 +51,7 @@ const dashboardRouter = createBrowserRouter(
 		<Route path="dashboard/" element={<DashboardLayout />}>
 			<Route index element={<Overview />} />
 			<Route path="products" element={<Products />} />
+			<Route path="addProducts" element={<AddProducts />} />
 			<Route path="customers" element={<Customers />} />
 			<Route path="orders" element={<Orders />} />
 			<Route path="charts" element={<Charts />} />
