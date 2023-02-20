@@ -9,6 +9,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 //import { listProducts } from '../../actions/productActions';
 import { listProducts } from '../../features/products/productListDataSlice';
 import { CircularProgress } from '@mui/material';
+import { Checkbox } from 'antd';
 
 const theme = createTheme({
 	palette: {
@@ -24,6 +25,18 @@ const theme = createTheme({
 function valuetext(value) {
 	return `${value}`;
 }
+
+const CheckboxGroup = Checkbox.Group;
+const plainOptions = [
+	'Red',
+	'Green',
+	'Blue',
+	'Orange',
+	'Yellow',
+	'Black',
+	'White',
+];
+const defaultCheckedList = [];
 
 const Shop = () => {
 	const dispatch = useDispatch();
@@ -50,6 +63,20 @@ const Shop = () => {
 			...filters,
 			[e.target.name]: value,
 		});
+	};
+
+	const [checkedList, setCheckedList] = useState(defaultCheckedList);
+	const [indeterminate, setIndeterminate] = useState(true);
+	const [checkAll, setCheckAll] = useState(false);
+	const onChange = (list) => {
+		setCheckedList(list);
+		setIndeterminate(!!list.length && list.length < plainOptions.length);
+		setCheckAll(list.length === plainOptions.length);
+	};
+	const onCheckAllChange = (e) => {
+		setCheckedList(e.target.checked ? plainOptions : []);
+		setIndeterminate(false);
+		setCheckAll(e.target.checked);
 	};
 
 	return (
@@ -112,23 +139,24 @@ const Shop = () => {
 					</div>
 					<div className="colors">
 						<h3>COLOR</h3>
-						<select
-							name="color"
-							id=""
-							onChange={handleFilters}
-							defaultValue={'DEFAULT'}
+						<Checkbox
+							indeterminate={indeterminate}
+							onChange={onCheckAllChange}
+							checked={checkAll}
 						>
-							<option value="DEFAULT" disabled>
-								Color
-							</option>
-							<option value="White">White</option>
-							<option value="Black">Black</option>
-							<option value="Red">Red</option>
-							<option value="Blue">Blue</option>
-							<option value="Yellow">Yellow</option>
-							<option value="Gray">Gray</option>
-							<option value="Orange">Orange</option>
-						</select>
+							All Colors
+						</Checkbox>
+						<CheckboxGroup
+							options={plainOptions}
+							value={checkedList}
+							onChange={onChange}
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								marginInlineStart: 0,
+								marginLeft: 10,
+							}}
+						/>
 
 						{/* <FormGroup name='color' onChange={handleFilters}>
             <FormControlLabel

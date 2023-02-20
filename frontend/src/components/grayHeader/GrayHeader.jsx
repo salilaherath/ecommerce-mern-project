@@ -17,10 +17,14 @@ const GrayHeader = () => {
 	const items = [
 		{
 			key: '1',
-			label: <p>{userInfo.isAdmin ? 'Dashboard' : 'Profile'}</p>,
+			label: <p>Dashboard</p>,
 		},
 		{
 			key: '2',
+			label: <p>Profile</p>,
+		},
+		{
+			key: '3',
 			label: <p onClick={logoutHandler}>Logout</p>,
 		},
 	];

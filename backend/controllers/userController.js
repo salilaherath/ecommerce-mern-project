@@ -75,8 +75,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-//Update user
-
 // @desc Get all users
 // @route GET /api/users
 // @access Private/Admin
@@ -86,4 +84,56 @@ const getUsers = asyncHandler(async (req, res) => {
 	res.json(users);
 });
 
-export { authUser, registerUser, getUserProfile, getUsers };
+// Get a user
+const getUser = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	// console.log(id);
+	try {
+		const getUser = await User.findById(id);
+		res.json(getUser);
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
+// Delete a user
+const deleteUser = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	// console.log(id);
+	try {
+		const deleteUser = await User.findByIdAndDelete(id);
+		res.json(deleteUser);
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
+//Update user
+const updateUser = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	try {
+		const updateUser = await User.findByIdAndUpdate(
+			id,
+			{
+				name: req.body.name,
+				email: req.body.email,
+			},
+			{
+				new: true,
+			}
+		);
+		res.json(updateUser);
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
+export {
+	authUser,
+	registerUser,
+	getUserProfile,
+	getUsers,
+	getUser,
+	deleteUser,
+	updateUser,
+};
