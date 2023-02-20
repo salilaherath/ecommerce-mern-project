@@ -84,7 +84,9 @@ const getUsers = asyncHandler(async (req, res) => {
 	res.json(users);
 });
 
-// Get a user
+// @desc Get a single user
+// @route GET /api/users/:id
+// @access Private/Admin
 const getUser = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 	// console.log(id);
@@ -96,7 +98,9 @@ const getUser = asyncHandler(async (req, res) => {
 	}
 });
 
-// Delete a user
+// @desc Delete a single user
+// @route DELETE /api/users/:id
+// @access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 	// console.log(id);
