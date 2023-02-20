@@ -6,7 +6,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-//import { listProducts } from '../../actions/productActions';
 import { listProducts } from '../../features/products/productListDataSlice';
 import { CircularProgress } from '@mui/material';
 import { Checkbox } from 'antd';

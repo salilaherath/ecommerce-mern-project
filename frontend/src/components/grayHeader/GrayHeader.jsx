@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/users/userLogInDataSlice';
 import { resetWithProfile } from '../../features/users/profileDataSlice';
@@ -14,14 +14,21 @@ const GrayHeader = () => {
 		dispatch(resetWithProfile());
 	};
 
+	const navigate = useNavigate();
+
+	const navigateToProfile = () => {
+		navigate('/users/profile');
+	};
+
 	const items = [
 		{
 			key: '1',
 			label: <p>Dashboard</p>,
+			// label: <p>{userInfo.isAdmin ? 'Dashboard' : 'Profile'}</p>,
 		},
 		{
 			key: '2',
-			label: <p>Profile</p>,
+			label: <p onClick={navigateToProfile}>Profile</p>,
 		},
 		{
 			key: '3',

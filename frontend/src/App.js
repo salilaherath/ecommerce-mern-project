@@ -13,6 +13,7 @@ import ProductDetails from './screens/productDetails/ProductDetails';
 import Cart from './screens/cart/Cart';
 import Login from './screens/login/Login';
 import Register from './screens/register/Register';
+import Profile from './screens/profile/Profile';
 import LandingPageLayout from './layouts/LandingPageLayout';
 import Overview from './screens/admin/scenes/Overview';
 import Products from './screens/admin/scenes/Products';
@@ -35,6 +36,7 @@ const landingRouter = createBrowserRouter(
 			<Route path="product/:id" element={<ProductDetails />} />
 			<Route path="cart" element={<Cart />} />
 			<Route path="cart/:id?" element={<Cart />} />
+			<Route path="users/profile" element={<Profile />} />
 			<Route path="dashboard" element={<DashboardLayout />}>
 				<Route path="overview" element={<Overview />} />
 				<Route path="products" element={<Products />} />

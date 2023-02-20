@@ -4,6 +4,12 @@
 	padding: 0;
 }
 
+.landingpage-layout {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
 ::-webkit-scrollbar {
 	width: 10px;
 }
