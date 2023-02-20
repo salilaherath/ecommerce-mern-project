@@ -1,6 +1,16 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 
+//Create product
+const createProduct = asyncHandler(async (req, res) => {
+	try {
+		const newProduct = await Product.create(req.body);
+		res.json(newProduct);
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
 // @desc Fetch all products
 // @route GET /api/products
 // @access Public
@@ -23,4 +33,4 @@ const getProductsById = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getProducts, getProductsById };
+export { createProduct, getProducts, getProductsById };

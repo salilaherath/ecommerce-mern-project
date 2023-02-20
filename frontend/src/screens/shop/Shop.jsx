@@ -154,7 +154,6 @@ const Shop = () => {
 								display: 'flex',
 								flexDirection: 'column',
 								marginInlineStart: 0,
-								marginLeft: 10,
 							}}
 						/>
 
