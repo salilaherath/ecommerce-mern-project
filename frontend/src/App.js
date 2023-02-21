@@ -22,6 +22,8 @@ import Orders from './screens/admin/scenes/Orders';
 import Charts from './screens/admin/scenes/Charts';
 import AddProducts from './screens/admin/scenes/AddProducts';
 import DashboardLayout from './layouts/DashboardLayout';
+import Checkout from './screens/checkout/Checkout';
+import Payment from './screens/payment/Payment';
 
 const landingRouter = createBrowserRouter(
 	createRoutesFromElements(
@@ -36,6 +38,8 @@ const landingRouter = createBrowserRouter(
 			<Route path="product/:id" element={<ProductDetails />} />
 			<Route path="cart" element={<Cart />} />
 			<Route path="cart/:id?" element={<Cart />} />
+			<Route path="checkout" element={<Checkout />} />
+			<Route path="payment" element={<Payment />} />
 			<Route path="users/profile" element={<Profile />} />
 			<Route path="dashboard" element={<DashboardLayout />}>
 				<Route path="overview" element={<Overview />} />
