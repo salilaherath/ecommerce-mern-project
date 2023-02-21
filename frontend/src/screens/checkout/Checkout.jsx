@@ -1,11 +1,36 @@
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addShippingAddress } from '../../features/cart/cartDataSlice';
+
 import './checkout.scss';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
+	const shippingAddress = useSelector((state) => state.cart.shippingAddress);
+	const [formFields, setFormFields] = useState({
+		address: shippingAddress.address,
+		city: shippingAddress.city,
+		name: shippingAddress.name,
+	});
+	const { name, address, city } = formFields;
+	const dispatch = useDispatch();
+
 	const navigate = useNavigate();
-	const handlePayment = () => {
-		navigate('/payment');
+	const submitHandler = (e) => {
+		e.preventDefault();
+		dispatch(addShippingAddress(formFields));
+		// navigate('/payment');
 	};
+	const handleOnChange = (e) => {
+		setFormFields((prevState) => ({
+			...prevState,
+			[e.target.name]: e.target.value,
+		}));
+	};
+	// const navigate = useNavigate();
+	// const handlePayment = () => {
+	// 	navigate('/payment');
+	// };
 	const handleBackShopping = () => {
 		navigate('/shop');
 	};
@@ -18,20 +43,42 @@ const Checkout = () => {
 				<div className="container">
 					<div className="billing-details">
 						<h3>BILLING DETAILS</h3>
-						<div className="form">
-							<input type="text" placeholder="First name" />
-							<input type="text" placeholder="Last name" />
-							<input type="text" placeholder="Shipping address line 1" />
-							<input type="text" placeholder="Shipping address line 2" />
+						<form className="form" onSubmit={submitHandler}>
+							<input
+								type="text"
+								name="name"
+								required
+								value={name}
+								onChange={handleOnChange}
+								placeholder="Name"
+							/>
+							<input
+								type="text"
+								name="address"
+								value={address}
+								required
+								onChange={handleOnChange}
+								placeholder="Shipping address"
+							/>
+							<input
+								type="text"
+								name="city"
+								value={city}
+								required
+								onChange={handleOnChange}
+								placeholder="City"
+							/>
 							<input type="text" placeholder="Contact no" />
 							<input type="text" placeholder="Email" />
-						</div>
-						<button className="shopping-btn" onClick={handleBackShopping}>
-							BACK TO SHOPPING
-						</button>
-						<button className="payment-btn" onClick={handlePayment}>
-							PAYMENT
-						</button>
+							<div className="buttons">
+								<button className="shopping-btn" onClick={handleBackShopping}>
+									BACK TO SHOPPING
+								</button>
+								<button className="payment-btn" type="submit">
+									PAYMENT
+								</button>
+							</div>
+						</form>
 					</div>
 					<div className="order-details">
 						<h3>YOUR ORDER</h3>

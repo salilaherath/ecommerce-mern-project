@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { addToCart, removeFromCart } from '../../features/cart/cartDataSlice';
+import { removeFromCart } from '../../features/cart/cartDataSlice';
+import { addToCart } from '../../features/cart/cartActions';
 import Delete from '@mui/icons-material/Delete';
 
 const Cart = () => {

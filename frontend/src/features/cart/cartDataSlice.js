@@ -1,12 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { addToCart } from './cartActions';
 import cartDataService from './cartDataService';
 
 const cart = JSON.parse(localStorage.getItem('cartItems'));
-// const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress'));
+const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress'));
 
 const initialState = {
 	cartItems: cart ? cart : [],
-	// shippingAddress: shippingAddress ? shippingAddress : {},
+	shippingAddress: shippingAddress
+		? shippingAddress
+		: { address: '', city: '', name: '' },
 	itemsPrice: 0,
 	totalPrice: 0,
 	isError: false,
@@ -15,29 +18,23 @@ const initialState = {
 	message: '',
 };
 
-//addProducts
-export const addToCart = createAsyncThunk('cart/add', async (ob, thunkAPI) => {
-	try {
-		//console.log(ob)
-		return await cartDataService.checkCart(ob.id, ob.qty);
-	} catch (error) {
-		const message =
-			(error.response && error.response.data && error.response.data.message) ||
-			error.message ||
-			error.toString();
-		return thunkAPI.rejectWithValue(message);
-	}
-});
-
 export const cartDataSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		reset: (state) => {
+		resetStatus: (state) => {
 			state.isLoading = false;
 			state.isError = false;
 			state.isSuccess = false;
 			state.message = '';
+		},
+		resetData: (state) => {
+			state.cartItems = cart ? cart : [];
+			state.shippingAddress = shippingAddress
+				? shippingAddress
+				: { address: '', city: '' };
+			state.itemsPrice = 0;
+			state.totalPrice = 0;
 		},
 		setPrices: (state, action) => {
 			state.itemsPrice = action.payload.itemsPrice;
@@ -110,6 +107,7 @@ export const cartDataSlice = createSlice({
 
 export const {
 	reset,
+	resetData,
 	removeFromCart,
 	addShippingAddress,
 	savePaymentMethod,
