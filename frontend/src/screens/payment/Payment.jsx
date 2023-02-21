@@ -1,6 +1,12 @@
 import './payment.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Payment = () => {
+	const navigate = useNavigate();
+	const handleBackCart = () => {
+		navigate('/cart');
+	};
+
 	return (
 		<div className="payment-page">
 			<div className="payment-container">
@@ -17,7 +23,9 @@ const Payment = () => {
 							<input type="text" placeholder="Expiration (MM/YY)" />
 							<input type="text" placeholder="Security code" />
 						</div>
-						<button className="cart-btn">BACK TO CART</button>
+						<button className="cart-btn" onClick={handleBackCart}>
+							BACK TO CART
+						</button>
 						<button className="payment-btn">PAY NOW</button>
 					</div>
 					<div className="order-details">

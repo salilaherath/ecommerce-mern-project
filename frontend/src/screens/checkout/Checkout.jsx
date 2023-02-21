@@ -1,6 +1,15 @@
 import './checkout.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
+	const navigate = useNavigate();
+	const handlePayment = () => {
+		navigate('/payment');
+	};
+	const handleBackShopping = () => {
+		navigate('/shop');
+	};
+
 	return (
 		<div className="checkout-page">
 			<div className="checkout-container">
@@ -17,8 +26,12 @@ const Checkout = () => {
 							<input type="text" placeholder="Contact no" />
 							<input type="text" placeholder="Email" />
 						</div>
-						<button className="shopping-btn">BACK TO SHOPPING</button>
-						<button className="payment-btn">PAYMENT</button>
+						<button className="shopping-btn" onClick={handleBackShopping}>
+							BACK TO SHOPPING
+						</button>
+						<button className="payment-btn" onClick={handlePayment}>
+							PAYMENT
+						</button>
 					</div>
 					<div className="order-details">
 						<h3>YOUR ORDER</h3>

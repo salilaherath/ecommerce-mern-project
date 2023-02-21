@@ -32,6 +32,10 @@ const Cart = () => {
 		dispatch(removeFromCart(id));
 	};
 
+	const handleCheckout = () => {
+		navigate('/checkout');
+	};
+
 	return (
 		<div className="cart-page">
 			<div className="cart">
@@ -128,7 +132,9 @@ const Cart = () => {
                 currency='LKR'>
                 <button className='checkout-btn'>CHECKOUT NOW</button>
               </StripeCheckout> */}
-							<button className="checkout-btn">CHECKOUT NOW</button>
+							<button className="checkout-btn" onClick={handleCheckout}>
+								CHECKOUT NOW
+							</button>
 						</div>
 					</div>
 				</div>
