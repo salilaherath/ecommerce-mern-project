@@ -1,8 +1,10 @@
-import { Box, useTheme } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens } from '../theme';
 import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import { useNavigate } from 'react-router-dom';
 
 const Products = () => {
 	const theme = useTheme();
@@ -38,11 +40,38 @@ const Products = () => {
 		},
 	];
 
+	const navigate = useNavigate();
+
+	const navigateAddProducts = () => {
+		navigate('/dashboard/addProducts');
+	};
+
 	return (
 		<Box m="20px">
-			<Header title="PRODUCTS" subtitle="Manage Products of Vintage Clothing" />
+			<Box display="flex" justifyContent="space-between" alignItems="center">
+				<Header
+					title="PRODUCTS"
+					subtitle="Manage Products of Vintage Clothing"
+				/>
+
+				<Box>
+					<Button
+						onClick={navigateAddProducts}
+						sx={{
+							backgroundColor: colors.blueAccent[700],
+							color: colors.grey[100],
+							fontSize: '14px',
+							fontWeight: 'bold',
+							padding: '10px 20px',
+						}}
+					>
+						<DownloadOutlinedIcon sx={{ mr: '10px' }} />
+						Add Products
+					</Button>
+				</Box>
+			</Box>
 			<Box
-				m="40px 0 0 0"
+				m="0 0 0 0"
 				height="75vh"
 				sx={{
 					'& .MuiDataGrid-root': {

@@ -112,6 +112,18 @@ const getUsers = asyncHandler(async (req, res) => {
 	res.json(users);
 });
 
+// @desc Get all customers
+// @route GET /api/users/customers
+// @access Private/Admin
+const getCustomers = asyncHandler(async (req, res) => {
+	try {
+		const customers = await User.find({ isAdmin: false }).select('-password');
+		res.status(200).json(customers);
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
 // @desc Get a single user
 // @route GET /api/users/:id
 // @access Private/Admin
@@ -148,4 +160,5 @@ export {
 	getUser,
 	deleteUser,
 	updateUserProfile,
+	getCustomers,
 };

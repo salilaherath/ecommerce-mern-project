@@ -7,7 +7,10 @@ import {
 } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { removeFromCart } from '../../features/cart/cartDataSlice';
+import {
+	removeFromCart,
+	resetCartStatus,
+} from '../../features/cart/cartDataSlice';
 import { addToCart } from '../../features/cart/cartActions';
 import Delete from '@mui/icons-material/Delete';
 
@@ -16,7 +19,9 @@ const Cart = () => {
 	const { id: proID } = useParams();
 	const [searchParams] = useSearchParams();
 	const qty = searchParams.get('qty');
-	const ob = { id: proID, qty: qty };
+	const color = searchParams.get('color');
+	const size = searchParams.get('size');
+	const ob = { id: proID, qty: qty, color: color, size: size };
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const cart = useSelector((state) => state.cart);

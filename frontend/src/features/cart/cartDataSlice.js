@@ -22,13 +22,13 @@ export const cartDataSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		resetStatus: (state) => {
+		resetCartStatus: (state) => {
 			state.isLoading = false;
 			state.isError = false;
 			state.isSuccess = false;
 			state.message = '';
 		},
-		resetData: (state) => {
+		resetCartData: (state) => {
 			state.cartItems = cart ? cart : [];
 			state.shippingAddress = shippingAddress
 				? shippingAddress
@@ -106,8 +106,8 @@ export const cartDataSlice = createSlice({
 });
 
 export const {
-	reset,
-	resetData,
+	resetCartStatus,
+	resetCartData,
 	removeFromCart,
 	addShippingAddress,
 	savePaymentMethod,
