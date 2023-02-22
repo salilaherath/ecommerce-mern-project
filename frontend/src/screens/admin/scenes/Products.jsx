@@ -1,44 +1,121 @@
-import { Box, Button, useTheme } from '@mui/material';
+import { Avatar, Box, Button, useTheme } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens } from '../theme';
-import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import productService from '../../../features/products/productService';
+import { message, Popconfirm } from 'antd';
 
 const Products = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const confirm = (e) => {
+		console.log(e);
+		message.success('Deleted the product');
+	};
+	const cancel = (e) => {
+		console.log(e);
+		message.error('Click on No');
+	};
+
 	const columns = [
-		{ field: 'id', headerName: 'ID' },
+		{ field: '_id', headerName: 'ID' },
+		{
+			field: 'image',
+			headerName: 'Image',
+			renderCell: (params) => <Avatar src={params.value} />,
+			flex: 0.5,
+		},
 		{
 			field: 'name',
 			headerName: 'Name',
-			flex: 1,
-			cellClassName: 'name-column--cell',
+			flex: 0.8,
 		},
 		{
-			field: 'address',
-			headerName: 'Address',
+			field: 'brand',
+			headerName: 'Brand',
 			headerAlign: 'left',
 			align: 'left',
 		},
 		{
-			field: 'phone',
-			headerName: 'Contact No.',
+			field: 'categories',
+			headerName: 'Categories',
 			flex: 1,
 		},
 		{
-			field: 'email',
-			headerName: 'Email',
+			field: 'color',
+			headerName: 'Colors',
+			flex: 1,
+		},
+		{
+			field: 'size',
+			headerName: 'Sizes',
+			flex: 1,
+		},
+		{
+			field: 'price',
+			headerName: 'Price',
+			flex: 0.6,
+		},
+		{
+			field: 'countInStock',
+			headerName: 'Count In Stock',
+			flex: 0.9,
+		},
+		{
+			field: 'numReviews',
+			headerName: 'No. of Reviews',
+			flex: 1,
+		},
+		{
+			field: 'rating',
+			headerName: 'Rating',
 			flex: 1,
 		},
 		{
 			field: 'actions',
 			headerName: 'Actions',
 			flex: 1,
+			headerAlign: 'center',
+			renderCell: (cellValues) => {
+				return (
+					<>
+						<Popconfirm
+							title="Delete the Product"
+							description="Are you sure to delete this product?"
+							onConfirm={confirm}
+							onCancel={cancel}
+							okText="Yes"
+							cancelText="No"
+						>
+							<Button sx={{ color: colors.grey[100] }}>
+								<DeleteIcon />
+							</Button>
+						</Popconfirm>
+						<Button sx={{ color: colors.grey[100] }}>
+							<EditIcon />
+						</Button>
+					</>
+				);
+			},
 		},
 	];
+
+	const [products, setProducts] = useState([]);
+	useEffect(() => {
+		getProducts();
+	}, []);
+
+	const getProducts = () => {
+		productService.getProducts().then((data) => {
+			setProducts(data);
+		});
+	};
 
 	const navigate = useNavigate();
 
@@ -104,7 +181,8 @@ const Products = () => {
 			>
 				<DataGrid
 					checkboxSelection
-					rows={mockDataTeam}
+					getRowId={(row) => row._id}
+					rows={products || []}
 					columns={columns}
 					components={{ Toolbar: GridToolbar }}
 				/>
