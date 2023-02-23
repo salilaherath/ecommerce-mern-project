@@ -23,7 +23,7 @@ export const logInUser = createAsyncThunk(
 			};
 			const data = await userService.login({ email, password }, config);
 			localStorage.setItem('userInfo', JSON.stringify(data));
-			console.log(data);
+			// console.log(data);
 			return data;
 			//return await productService.listProduct(id)
 		} catch (error) {

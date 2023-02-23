@@ -17,7 +17,7 @@ const DashboardLayout = () => {
 	const [theme, colorMode] = useMode();
 	const navigate = useNavigate();
 	const userInfo = useSelector((state) => state.userLogInDetails.userInfo);
-	console.log(userInfo);
+
 	useEffect(() => {
 		if (userInfo !== null) {
 			if (!userInfo.isAdmin) {

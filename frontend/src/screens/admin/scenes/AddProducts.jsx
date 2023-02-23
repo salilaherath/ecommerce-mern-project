@@ -1,5 +1,6 @@
+import * as React from 'react';
 import { Box, Button, TextField } from '@mui/material';
-import { Formik } from 'formik';
+import { Field, FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from '../components/Header';
@@ -8,6 +9,7 @@ const Form = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 
 	const handleFormSubmit = (values) => {
+		// e.preventDefault();
 		console.log(values);
 	};
 
@@ -16,9 +18,9 @@ const Form = () => {
 			<Header title="ADD PRODUCTS" subtitle="Add New Products to the System" />
 
 			<Formik
-				onSubmit={handleFormSubmit}
+				// onSubmit={handleFormSubmit}
 				initialValues={initialValues}
-				validationSchema={checkoutSchema}
+				validationSchema={productSchema}
 			>
 				{({
 					values,
@@ -32,12 +34,14 @@ const Form = () => {
 						<Box
 							display="grid"
 							gap="30px"
-							gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+							mr="500px"
+							gridTemplateColumns="repeat(6, minmax(0, 1fr))"
 							sx={{
-								'& > div': { gridColumn: isNonMobile ? undefined : 'span 4' },
+								'& > div': { gridColumn: isNonMobile ? undefined : 'span 6' },
 							}}
 						>
-							<TextField
+							<Field
+								as={TextField}
 								fullWidth
 								variant="filled"
 								type="text"
@@ -48,7 +52,7 @@ const Form = () => {
 								name="name"
 								error={!!touched.name && !!errors.name}
 								helperText={touched.name && errors.name}
-								sx={{ gridColumn: 'span 2' }}
+								sx={{ gridColumn: 'span 3' }}
 							/>
 							<TextField
 								fullWidth
@@ -61,48 +65,122 @@ const Form = () => {
 								name="price"
 								error={!!touched.price && !!errors.price}
 								helperText={touched.price && errors.price}
-								sx={{ gridColumn: 'span 2' }}
+								sx={{ gridColumn: 'span 3' }}
 							/>
 							<TextField
 								fullWidth
 								variant="filled"
 								type="text"
-								label="Contact Number"
+								label="Description"
 								onBlur={handleBlur}
 								onChange={handleChange}
-								value={values.contact}
-								name="contact"
-								error={!!touched.contact && !!errors.contact}
-								helperText={touched.contact && errors.contact}
-								sx={{ gridColumn: 'span 4' }}
+								value={values.description}
+								name="description"
+								error={!!touched.description && !!errors.description}
+								helperText={touched.description && errors.description}
+								sx={{ gridColumn: 'span 3' }}
 							/>
 							<TextField
 								fullWidth
 								variant="filled"
 								type="text"
-								label="Address 1"
+								label="Brand"
 								onBlur={handleBlur}
 								onChange={handleChange}
-								value={values.address1}
-								name="address1"
-								error={!!touched.address1 && !!errors.address1}
-								helperText={touched.address1 && errors.address1}
+								value={values.brand}
+								name="brand"
+								error={!!touched.brand && !!errors.brand}
+								helperText={touched.brand && errors.brand}
+								sx={{ gridColumn: 'span 3' }}
 							/>
 							<TextField
 								variant="filled"
 								type="text"
-								label="Address 2"
+								label="Main Category"
 								onBlur={handleBlur}
 								onChange={handleChange}
-								value={values.address2}
-								name="address2"
-								error={!!touched.address2 && !!errors.address2}
-								helperText={touched.address2 && errors.address2}
+								value={values.mainCategory}
+								name="mainCategory"
+								error={!!touched.mainCategory && !!errors.mainCategory}
+								helperText={touched.mainCategory && errors.mainCategory}
+								sx={{ gridColumn: 'span 3' }}
 							/>
+							<TextField
+								variant="filled"
+								type="text"
+								label="Sub Category"
+								onBlur={handleBlur}
+								onChange={handleChange}
+								value={values.subCategory}
+								name="subCategory"
+								error={!!touched.subCategory && !!errors.subCategory}
+								helperText={touched.subCategory && errors.subCategory}
+								sx={{ gridColumn: 'span 3' }}
+							/>
+
+							{/* <FieldArray name="variation">
+
+								{({insert, remove, push})=>(
+									{values.variation && values.variation.length>0 && values.variation.map((item, index)=>(
+<React.Fragment key={index}>
+											<TextField
+												variant="filled"
+												type="text"
+												label="Color"
+												onBlur={handleBlur}
+												onChange={handleChange}
+												value={values.color}
+												name={`variation[${index}].color`}
+												error={!!touched.color && !!errors.color}
+												helperText={touched.color && errors.color}
+												sx={{ gridColumn: 'span 1.5' }}
+											/>
+											<TextField
+												variant="filled"
+												type="text"
+												label="Size"
+												onBlur={handleBlur}
+												onChange={handleChange}
+												value={values.size}
+												name={`variation[${index}].size`}
+												error={!!touched.size && !!errors.size}
+												helperText={touched.size && errors.size}
+												sx={{ gridColumn: 'span 1.5' }}
+											/>
+											<TextField
+												variant="filled"
+												type="text"
+												label="Count In Stock"
+												onBlur={handleBlur}
+												onChange={handleChange}
+												value={values.countInStock}
+												name={`variation[${index}].countInStock`}
+												error={!!touched.countInStock && !!errors.countInStock}
+												helperText={touched.countInStock && errors.countInStock}
+												sx={{ gridColumn: 'span 1.5' }}
+											/>
+											<Button
+												type="button"
+												color="secondary"
+												variant="contained"
+												onClick={() => arrayHelpers.insert(index, '')}
+											>
+												+
+											</Button>
+										</React.Fragment>
+
+									))}
+								)}
+							</FieldArray> */}
 						</Box>
-						<Box display="flex" justifyContent="end" mt="20px">
-							<Button type="submit" color="secondary" variant="contained">
-								Create New User
+						<Box display="flex" justifyContent="end" mt="20px" mr="500px">
+							<Button
+								type="submit"
+								color="secondary"
+								variant="contained"
+								onClick={() => handleFormSubmit(values)}
+							>
+								Add Products
 							</Button>
 						</Box>
 					</form>
@@ -112,25 +190,45 @@ const Form = () => {
 	);
 };
 
-const phoneRegExp =
-	/^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
+const productSchema = yup.object().shape({
 	name: yup.string().required('required'),
 	price: yup.number().required('required'),
-	contact: yup
+	description: yup.string().required('required'),
+	brand: yup.string().required('required'),
+	countInStock: yup
 		.string()
-		.matches(phoneRegExp, 'Phone number is not valid')
-		.required('required'),
-	address1: yup.string().required('required'),
-	address2: yup.string().required('required'),
+		.required('required')
+		.test(
+			'Is positive?',
+			'The number must be greater than 0!',
+			(value) => value > 0
+		),
+	mainCategory: yup.string().required('required'),
+	subCategory: yup.string().required('required'),
+	size: yup.string().required('required'),
+	color: yup.string().required('required'),
+	variation: yup
+		.array()
+		.of(yup.string().required('Item is required'))
+		.required('At least one item is required'),
 });
 const initialValues = {
 	name: '',
 	price: '',
-	contact: '',
-	address1: '',
-	address2: '',
+	description: '',
+	brand: '',
+	mainCategory: '',
+	subCategory: '',
+	variation: [
+		{
+			size: '',
+			color: '',
+			countInStock: '',
+		},
+	],
+	// size: '',
+	// color: '',
+	// countInStock: '',
 };
 
 export default Form;

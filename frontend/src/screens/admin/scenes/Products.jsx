@@ -43,8 +43,8 @@ const Products = () => {
 			align: 'left',
 		},
 		{
-			field: 'categories',
-			headerName: 'Categories',
+			field: 'subCategory',
+			headerName: 'Sub Category',
 			flex: 1,
 		},
 		{

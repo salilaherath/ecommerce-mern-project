@@ -22,8 +22,22 @@ const getProducts = async () => {
 	return response.data;
 };
 
+//Add products
+const addProducts = async () => {
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+	const response = await axios.post(`/api/products`, config);
+	return response.data;
+};
+
 const productService = {
 	getProducts,
 	listProduct,
+	addProducts,
 };
 export default productService;
