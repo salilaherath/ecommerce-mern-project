@@ -9,18 +9,47 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import productService from '../../../features/products/productService';
 import { message, Popconfirm } from 'antd';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const Products = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 
-	const confirm = (e) => {
-		console.log(e);
-		message.success('Deleted the product');
+	const [products, setProducts] = useState([]);
+	useEffect(() => {
+		getProducts();
+	}, []);
+
+	const [selectionModel, setSelectionModel] = useState([]);
+
+	const getProducts = () => {
+		productService.getProducts().then((data) => {
+			setProducts(data);
+		});
+	};
+
+	const navigate = useNavigate();
+
+	const navigateAddProducts = () => {
+		navigate('/dashboard/addProducts');
+	};
+
+	const deleteItem = (id) => {
+		// alert(id);
+
+		productService.deleteProducts(id).then(
+			(data) => {
+				message.success('Deleted the product: ' + id);
+				getProducts();
+			},
+			(error) => {
+				message.error('Delete Failed');
+			}
+		);
 	};
 	const cancel = (e) => {
 		console.log(e);
-		message.error('Click on No');
+		message.error('Delete Canceled');
 	};
 
 	const columns = [
@@ -47,25 +76,37 @@ const Products = () => {
 			headerName: 'Sub Category',
 			flex: 1,
 		},
-		{
-			field: 'color',
-			headerName: 'Colors',
-			flex: 1,
-		},
-		{
-			field: 'size',
-			headerName: 'Sizes',
-			flex: 1,
-		},
+		// {
+		// 	field: 'color',
+		// 	headerName: 'Colors',
+		// 	flex: 1,
+		// },
+		// {
+		// 	field: 'size',
+		// 	headerName: 'Sizes',
+		// 	flex: 1,
+		// },
 		{
 			field: 'price',
 			headerName: 'Price',
 			flex: 0.6,
 		},
 		{
-			field: 'countInStock',
-			headerName: 'Count In Stock',
-			flex: 0.9,
+			field: 'variation',
+			headerName: 'Product Variations',
+			flex: 1,
+			renderCell: (params) => {
+				return (
+					<div>
+						{params.value.map((item, index) => (
+							<div key={index}>
+								{item.color} - {item.size} - {item.countInStock}
+							</div>
+						))}
+					</div>
+				);
+			},
+			// valueGetter: (products) => products.row.variation.color,
 		},
 		{
 			field: 'numReviews',
@@ -88,7 +129,7 @@ const Products = () => {
 						<Popconfirm
 							title="Delete the Product"
 							description="Are you sure to delete this product?"
-							onConfirm={confirm}
+							onConfirm={() => deleteItem(selectionModel)}
 							onCancel={cancel}
 							okText="Yes"
 							cancelText="No"
@@ -105,23 +146,6 @@ const Products = () => {
 			},
 		},
 	];
-
-	const [products, setProducts] = useState([]);
-	useEffect(() => {
-		getProducts();
-	}, []);
-
-	const getProducts = () => {
-		productService.getProducts().then((data) => {
-			setProducts(data);
-		});
-	};
-
-	const navigate = useNavigate();
-
-	const navigateAddProducts = () => {
-		navigate('/dashboard/addProducts');
-	};
 
 	return (
 		<Box m="20px">
@@ -142,7 +166,7 @@ const Products = () => {
 							padding: '10px 20px',
 						}}
 					>
-						<DownloadOutlinedIcon sx={{ mr: '10px' }} />
+						<PlaylistAddIcon sx={{ mr: '10px' }} />
 						Add Products
 					</Button>
 				</Box>
@@ -185,6 +209,17 @@ const Products = () => {
 					rows={products || []}
 					columns={columns}
 					components={{ Toolbar: GridToolbar }}
+					// onSelectionModelChange={(ids) => {
+					// 	const selectedIDs = new Set(ids);
+					// 	const selectedRowData = products.filter((row) =>
+					// 		selectedIDs.has(row._id.toString())
+					// 	);
+					// 	console.log(selectedRowData);
+					// }}
+					onSelectionModelChange={(newSelectionModel) => {
+						setSelectionModel(newSelectionModel);
+					}}
+					selectionModel={selectionModel}
 				/>
 			</Box>
 		</Box>

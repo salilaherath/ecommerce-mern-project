@@ -9,6 +9,8 @@ import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 	const theme = useTheme();
@@ -119,7 +121,7 @@ const Sidebar = () => {
 						<Item
 							title="Products"
 							to="/dashboard/products"
-							icon={<PeopleOutlinedIcon />}
+							icon={<InventoryIcon />}
 							selected={selected}
 							setSelected={setSelected}
 						/>
@@ -140,7 +142,7 @@ const Sidebar = () => {
 						<Item
 							title="Charts"
 							to="/dashboard/charts"
-							icon={<PersonOutlinedIcon />}
+							icon={<BarChartIcon />}
 							selected={selected}
 							setSelected={setSelected}
 						/>

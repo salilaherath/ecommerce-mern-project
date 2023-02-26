@@ -3,12 +3,22 @@ import dotenv from 'dotenv';
 import colors from 'colors';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
-
+import AWS from 'aws-sdk';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 
 dotenv.config();
+
+const region = 'ap-south-1';
+const myCredentials = {
+	accessKeyId: process.env.ACCESSKEYIDS3BUCKET,
+	secretAccessKey: process.env.SECRETKEYS3BUCKET,
+};
+export const s3 = new AWS.S3({
+	credentials: myCredentials,
+	region: region,
+});
 
 connectDB();
 

@@ -1,5 +1,5 @@
 import './header.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,12 @@ import { useSelector } from 'react-redux';
 const Header = () => {
 	const cart = useSelector((state) => state.cart);
 	const { cartItems } = cart;
+
+	const navigate = useNavigate();
+
+	const navigateToCart = () => {
+		navigate('/cart');
+	};
 	return (
 		<div className="full_header">
 			<div className="header">
@@ -37,18 +43,16 @@ const Header = () => {
 							<SearchOutlinedIcon />
 						</span>
 					</div>
-					<Link to="/cart">
-						<div className="btn_cart">
-							<button>
-								<span className="icon">
-									<ShoppingCartOutlinedIcon />
-								</span>
-								<span className="text">
-									{cartItems.reduce((acc, item) => acc + item.qty, 0)} Item(s)
-								</span>
-							</button>
-						</div>
-					</Link>
+					<div className="btn_cart" onClick={navigateToCart}>
+						<button>
+							<span className="icon">
+								<ShoppingCartOutlinedIcon />
+							</span>
+							<span className="text">
+								{cartItems.reduce((acc, item) => acc + item.qty, 0)} Item(s)
+							</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

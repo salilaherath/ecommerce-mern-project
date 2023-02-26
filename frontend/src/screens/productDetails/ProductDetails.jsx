@@ -69,7 +69,9 @@ const ProductDetails = () => {
 		//navigate(`/cart/${id}?qty=${qty}`);
 		navigate(`/cart/${id}?qty=${qty}&color=${color}&size=${size}`);
 	};
-
+	console.log(product);
+	const image = new Uint8Array(JSON.stringify(product.image));
+	console.log(image);
 	return (
 		<>
 			{isLoading ? (

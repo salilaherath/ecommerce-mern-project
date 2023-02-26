@@ -1,16 +1,56 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import path from 'path';
+import { s3 } from '../server.js';
 
-// @desc    Create a product
-// @route   POST /api/products
-// @access  Private/Admin
+//@desc create product
+//@route CREATE /api/products/:id
+//@access public/Admin
 const createProduct = asyncHandler(async (req, res) => {
-	try {
-		const newProduct = await Product.create(req.body);
-		res.json(newProduct);
-	} catch (error) {
-		throw new Error(error);
-	}
+	console.log(req.file);
+	const newProduct = new Product({
+		user: req.user._id,
+		...req.body,
+	});
+	const Key = `${newProduct._id}-image${path.extname(req.file.originalname)}`;
+	const uploadParams = {
+		Key: Key,
+		Bucket: 'vintage-clothing-product-images',
+		Body: req.file.buffer,
+	};
+	s3.putObject(uploadParams, async (err, data) => {
+		if (err) {
+			res.status(400);
+			throw new Error(`Failed to upload file to Server, please retry` + err);
+		}
+		if (data) {
+			newProduct[
+				'image'
+			] = `https://vintage-clothing-product-images.s3.ap-south-1.amazonaws.com/${Key}`;
+			await newProduct.save().then(
+				(data) => res.json(`Product Successfully added`),
+				(error) => {
+					let deleteParams = {
+						Key: Key,
+						Bucket: 'vintage-clothing-product-images',
+					};
+					s3.deleteObject(deleteParams, (err, data) => {
+						if (err) {
+							res.status(500);
+							throw new Error(
+								'Failed to add product to System and also failed delete the uploaded file from Bucket:' +
+									err
+							);
+						}
+						if (data) {
+							res.status(500);
+							throw new Error(`Failed to add product to the system` + error);
+						}
+					});
+				}
+			);
+		}
+	});
 });
 
 // @desc Fetch all products

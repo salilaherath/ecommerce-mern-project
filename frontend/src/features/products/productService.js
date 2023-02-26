@@ -23,7 +23,20 @@ const getProducts = async () => {
 };
 
 //Add products
-const addProducts = async () => {
+const addProducts = async (obj) => {
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const config = {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+	const response = await axios.post(`/api/products`, obj, config);
+	return response.data;
+};
+
+//Delete products
+const deleteProducts = async (id) => {
 	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 	const config = {
 		headers: {
@@ -31,7 +44,7 @@ const addProducts = async () => {
 			Authorization: `Bearer ${userInfo.token}`,
 		},
 	};
-	const response = await axios.post(`/api/products`, config);
+	const response = await axios.delete(`/api/products/${id}`, config);
 	return response.data;
 };
 
@@ -39,5 +52,6 @@ const productService = {
 	getProducts,
 	listProduct,
 	addProducts,
+	deleteProducts,
 };
 export default productService;
