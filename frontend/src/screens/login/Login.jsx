@@ -14,18 +14,18 @@ const Login = () => {
 	const { userInfo, isError, isLoading, message } = useSelector(
 		(state) => state.userLogInDetails
 	);
-	const redirect = searchParams.get('redirect')
-		? searchParams.get('redirect')
-		: '';
+	// const redirect = searchParams.get('redirect')
+	// 	? searchParams.get('redirect')
+	// 	: '';
 
 	useEffect(() => {
 		if (userInfo) {
-			navigate(`/${redirect}`);
+			navigate(`../`);
 		}
 		if (isError) {
 			toast.error(message);
 		}
-	}, [userInfo, navigate, isError, message, redirect]);
+	}, [userInfo, navigate, isError, message]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();

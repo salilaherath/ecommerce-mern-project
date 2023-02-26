@@ -272,7 +272,7 @@ const Dashboard = () => {
 						fontWeight="600"
 						sx={{ marginBottom: '15px' }}
 					>
-						Geography Based Traffic
+						{/* Geography Based Traffic */}
 					</Typography>
 					<Box height="200px">
 						{/* <GeographyChart isDashboard={true} /> */}

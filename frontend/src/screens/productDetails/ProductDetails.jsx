@@ -57,7 +57,7 @@ const ProductDetails = () => {
 		if (type === 'dec') {
 			qty > 1 && setQty(qty - 1);
 		} else {
-			setQty(qty + 1);
+			qty < product.countInStock && setQty(qty + 1);
 		}
 	};
 
@@ -66,10 +66,12 @@ const ProductDetails = () => {
 	);
 
 	const handleClick = () => {
-		navigate(`/cart/${id}?qty=${qty}`);
-		// navigate(`/cart/${id}?qty=${quantity}?color=${color}?size=${size}`);
+		//navigate(`/cart/${id}?qty=${qty}`);
+		navigate(`/cart/${id}?qty=${qty}&color=${color}&size=${size}`);
 	};
-
+	console.log(product);
+	const image = new Uint8Array(JSON.stringify(product.image));
+	console.log(image);
 	return (
 		<>
 			{isLoading ? (

@@ -20,18 +20,28 @@ const GrayHeader = () => {
 		navigate('/users/profile');
 	};
 
+	const navigateToDashboard = () => {
+		navigate('/dashboard');
+	};
+
 	const items = [
 		{
 			key: '1',
-			label: <p>Dashboard</p>,
-			// label: <p>{userInfo.isAdmin ? 'Dashboard' : 'Profile'}</p>,
+			//label: <p>Dashboard</p>,
+			label: (
+				<p
+					onClick={
+						userInfo && userInfo.isAdmin
+							? navigateToDashboard
+							: navigateToProfile
+					}
+				>
+					{userInfo && userInfo.isAdmin ? 'Dashboard' : 'Profile'}
+				</p>
+			),
 		},
 		{
 			key: '2',
-			label: <p onClick={navigateToProfile}>Profile</p>,
-		},
-		{
-			key: '3',
 			label: <p onClick={logoutHandler}>Logout</p>,
 		},
 	];

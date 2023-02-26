@@ -51,8 +51,8 @@ const ProfileScreen = () => {
 				//console.log(userInfo['token'])
 				dispatch(getProfile({ token: userInfo['token'] }));
 			} else {
-				// setName(profileInfo.name);
-				// setEmail(profileInfo.email);
+				setName(profileInfo.name);
+				setEmail(profileInfo.email);
 			}
 		}
 	}, [

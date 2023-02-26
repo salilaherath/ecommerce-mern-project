@@ -1,48 +1,178 @@
-import { Box, useTheme } from '@mui/material';
+import { Avatar, Box, Button, useTheme } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens } from '../theme';
-import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import productService from '../../../features/products/productService';
+import { message, Popconfirm } from 'antd';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const Products = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const [products, setProducts] = useState([]);
+	useEffect(() => {
+		getProducts();
+	}, []);
+
+	const [selectionModel, setSelectionModel] = useState([]);
+
+	const getProducts = () => {
+		productService.getProducts().then((data) => {
+			setProducts(data);
+		});
+	};
+
+	const navigate = useNavigate();
+
+	const navigateAddProducts = () => {
+		navigate('/dashboard/addProducts');
+	};
+
+	const deleteItem = (id) => {
+		// alert(id);
+
+		productService.deleteProducts(id).then(
+			(data) => {
+				message.success('Deleted the product: ' + id);
+				getProducts();
+			},
+			(error) => {
+				message.error('Delete Failed');
+			}
+		);
+	};
+	const cancel = (e) => {
+		console.log(e);
+		message.error('Delete Canceled');
+	};
+
 	const columns = [
-		{ field: 'id', headerName: 'ID' },
+		{ field: '_id', headerName: 'ID' },
+		{
+			field: 'image',
+			headerName: 'Image',
+			renderCell: (params) => <Avatar src={params.value} />,
+			flex: 0.5,
+		},
 		{
 			field: 'name',
 			headerName: 'Name',
-			flex: 1,
-			cellClassName: 'name-column--cell',
+			flex: 0.8,
 		},
 		{
-			field: 'address',
-			headerName: 'Address',
+			field: 'brand',
+			headerName: 'Brand',
 			headerAlign: 'left',
 			align: 'left',
 		},
 		{
-			field: 'phone',
-			headerName: 'Contact No.',
+			field: 'subCategory',
+			headerName: 'Sub Category',
+			flex: 1,
+		},
+		// {
+		// 	field: 'color',
+		// 	headerName: 'Colors',
+		// 	flex: 1,
+		// },
+		// {
+		// 	field: 'size',
+		// 	headerName: 'Sizes',
+		// 	flex: 1,
+		// },
+		{
+			field: 'price',
+			headerName: 'Price',
+			flex: 0.6,
+		},
+		{
+			field: 'variation',
+			headerName: 'Product Variations',
+			flex: 1,
+			renderCell: (params) => {
+				return (
+					<div>
+						{params.value.map((item, index) => (
+							<div key={index}>
+								{item.color} - {item.size} - {item.countInStock}
+							</div>
+						))}
+					</div>
+				);
+			},
+			// valueGetter: (products) => products.row.variation.color,
+		},
+		{
+			field: 'numReviews',
+			headerName: 'No. of Reviews',
 			flex: 1,
 		},
 		{
-			field: 'email',
-			headerName: 'Email',
+			field: 'rating',
+			headerName: 'Rating',
 			flex: 1,
 		},
 		{
 			field: 'actions',
 			headerName: 'Actions',
 			flex: 1,
+			headerAlign: 'center',
+			renderCell: (cellValues) => {
+				return (
+					<>
+						<Popconfirm
+							title="Delete the Product"
+							description="Are you sure to delete this product?"
+							onConfirm={() => deleteItem(selectionModel)}
+							onCancel={cancel}
+							okText="Yes"
+							cancelText="No"
+						>
+							<Button sx={{ color: colors.grey[100] }}>
+								<DeleteIcon />
+							</Button>
+						</Popconfirm>
+						<Button sx={{ color: colors.grey[100] }}>
+							<EditIcon />
+						</Button>
+					</>
+				);
+			},
 		},
 	];
 
 	return (
 		<Box m="20px">
-			<Header title="PRODUCTS" subtitle="Manage Products of Vintage Clothing" />
+			<Box display="flex" justifyContent="space-between" alignItems="center">
+				<Header
+					title="PRODUCTS"
+					subtitle="Manage Products of Vintage Clothing"
+				/>
+
+				<Box>
+					<Button
+						onClick={navigateAddProducts}
+						sx={{
+							backgroundColor: colors.blueAccent[700],
+							color: colors.grey[100],
+							fontSize: '14px',
+							fontWeight: 'bold',
+							padding: '10px 20px',
+						}}
+					>
+						<PlaylistAddIcon sx={{ mr: '10px' }} />
+						Add Products
+					</Button>
+				</Box>
+			</Box>
 			<Box
-				m="40px 0 0 0"
+				m="0 0 0 0"
 				height="75vh"
 				sx={{
 					'& .MuiDataGrid-root': {
@@ -75,9 +205,21 @@ const Products = () => {
 			>
 				<DataGrid
 					checkboxSelection
-					rows={mockDataTeam}
+					getRowId={(row) => row._id}
+					rows={products || []}
 					columns={columns}
 					components={{ Toolbar: GridToolbar }}
+					// onSelectionModelChange={(ids) => {
+					// 	const selectedIDs = new Set(ids);
+					// 	const selectedRowData = products.filter((row) =>
+					// 		selectedIDs.has(row._id.toString())
+					// 	);
+					// 	console.log(selectedRowData);
+					// }}
+					onSelectionModelChange={(newSelectionModel) => {
+						setSelectionModel(newSelectionModel);
+					}}
+					selectionModel={selectionModel}
 				/>
 			</Box>
 		</Box>

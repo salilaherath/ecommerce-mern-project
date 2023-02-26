@@ -1,31 +1,32 @@
 import { Box, useTheme } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { tokens } from '../theme';
-import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
+import { useEffect, useState } from 'react';
+import userService from '../../../features/users/userService';
 
 const Customers = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const columns = [
-		{ field: 'id', headerName: 'ID' },
+		{ field: '_id', headerName: 'ID', flex: 1 },
 		{
 			field: 'name',
 			headerName: 'Name',
 			flex: 1,
 			cellClassName: 'name-column--cell',
 		},
-		{
-			field: 'address',
-			headerName: 'Address',
-			headerAlign: 'left',
-			align: 'left',
-		},
-		{
-			field: 'phone',
-			headerName: 'Contact No.',
-			flex: 1,
-		},
+		// {
+		// 	field: 'address',
+		// 	headerName: 'Address',
+		// 	headerAlign: 'left',
+		// 	align: 'left',
+		// },
+		// {
+		// 	field: 'phone',
+		// 	headerName: 'Contact No.',
+		// 	flex: 1,
+		// },
 		{
 			field: 'email',
 			headerName: 'Email',
@@ -37,6 +38,19 @@ const Customers = () => {
 			flex: 1,
 		},
 	];
+	const [customers, setCustomers] = useState([]);
+	useEffect(() => {
+		getCustomers();
+	}, []);
+
+	const getCustomers = () => {
+		userService.getCustomers().then((data) => {
+			setCustomers(data);
+		});
+	};
+	// const addCustomers=(customerdata)=>{
+	// 	userService.addCustomers(c)
+	// }
 
 	return (
 		<Box m="20px">
@@ -73,7 +87,12 @@ const Customers = () => {
 					},
 				}}
 			>
-				<DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+				<DataGrid
+					checkboxSelection
+					getRowId={(row) => row._id}
+					rows={customers || []}
+					columns={columns}
+				/>
 			</Box>
 		</Box>
 	);
