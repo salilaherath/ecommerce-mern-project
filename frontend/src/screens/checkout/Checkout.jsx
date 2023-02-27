@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addShippingAddress } from '../../features/cart/cartDataSlice';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
 import './checkout.scss';
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +35,10 @@ const Checkout = () => {
 	const handleBackShopping = () => {
 		navigate('/shop');
 	};
+
+	const amount = '10';
+	const currency = 'USD';
+	const style = { layout: 'vertical' };
 
 	return (
 		<div className="checkout-page">
@@ -74,9 +79,44 @@ const Checkout = () => {
 								<button className="shopping-btn" onClick={handleBackShopping}>
 									BACK TO SHOPPING
 								</button>
-								<button className="payment-btn" type="submit">
+								{/* <button className="payment-btn" type="submit">
 									PAYMENT
-								</button>
+								</button> */}
+								<PayPalScriptProvider
+									options={{
+										'client-id':
+											'Ae3-1cfJsb1hONXExiFeade5o-un49JJoWTmB2NZ1QF4ozSzgBKCTBS5JzG8lpysZJNP_j95Q_zB1g_u',
+									}}
+								>
+									<PayPalButtons
+										style={style}
+										createOrder={(data, actions) => {
+											return actions.order
+												.create({
+													purchase_units: [
+														{
+															amount: {
+																currency_code: currency,
+																value: amount,
+															},
+														},
+													],
+												})
+												.then((orderId) => {
+													// Your code here after create the order
+													return orderId;
+												});
+										}}
+										onApprove={(data, actions) => {
+											return actions.order.capture().then(function (details) {
+												alert(
+													'Transaction completed by ' +
+														details.payer.name.given_name
+												);
+											});
+										}}
+									/>
+								</PayPalScriptProvider>
 							</div>
 						</form>
 					</div>
