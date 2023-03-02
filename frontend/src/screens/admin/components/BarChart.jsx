@@ -39,7 +39,14 @@ const BarChart = ({ isDashboard = false }) => {
 					},
 				},
 			}}
-			keys={['hot dog', 'burger', 'sandwich', 'kebab', 'fries', 'donut']}
+			keys={[
+				'Cotton Trouser',
+				'Cascais Shirt',
+				'Sports T-Shirt',
+				'Linen Dress',
+				'Wrap Skirt',
+				'Linen Kimono',
+			]}
 			indexBy="country"
 			margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
 			padding={0.3}

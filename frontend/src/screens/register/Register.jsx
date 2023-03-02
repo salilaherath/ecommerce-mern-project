@@ -73,6 +73,14 @@ const Register = () => {
 					id=""
 					onChange={(e) => setPassword(e.target.value)}
 				/>
+				<p>Confirm Password</p>
+				<input
+					type="password"
+					value={password}
+					name=""
+					id=""
+					// onChange={(e) => setPassword(e.target.value)}
+				/>
 				<button type="submit" onClick={submitHandler}>
 					Register
 				</button>

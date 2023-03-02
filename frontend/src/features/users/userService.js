@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//service function to logIn
+//service function to logn
 const login = async ({ email, password }, config) => {
 	const response = await axios.post(
 		`/api/users/login`,

@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { tokens } from '../theme';
 import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
+import { Select, Button } from 'antd';
+import { CopyOutlined } from '@ant-design/icons';
 
 const Orders = () => {
 	const theme = useTheme();
@@ -12,7 +14,7 @@ const Orders = () => {
 		{
 			field: 'name',
 			headerName: 'Customer Name',
-			flex: 1,
+			flex: 0.5,
 			cellClassName: 'name-column--cell',
 		},
 		{
@@ -20,20 +22,42 @@ const Orders = () => {
 			headerName: 'Delivery Address',
 			headerAlign: 'left',
 			align: 'left',
+			flex: 0.7,
 		},
 		{
 			field: 'phone',
 			headerName: 'Contact Number',
-			flex: 1,
+			flex: 0.5,
+		},
+		{
+			field: 'total',
+			headerName: 'Total (Rs)',
+			flex: 0.5,
 		},
 		{
 			field: 'status',
 			headerName: 'Order Status',
+			renderCell: (params) => (
+				<Select
+					defaultValue="Ordered"
+					style={{ width: 120 }}
+					// onChange={handleChange}
+					options={[
+						{ value: 'ordered', label: 'Ordered' },
+						{ value: 'packed', label: 'Packed' },
+						{ value: 'shipped', label: 'Shipped' },
+						{ value: 'delivered', label: 'Delivered' },
+					]}
+				/>
+			),
 			flex: 1,
 		},
 		{
 			field: 'actions',
 			headerName: 'Actions',
+			renderCell: (params) => (
+				<Button type="primary" icon={<CopyOutlined />} size="middle" />
+			),
 			flex: 1,
 		},
 	];

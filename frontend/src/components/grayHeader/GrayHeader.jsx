@@ -7,8 +7,10 @@ import './grayHeader.scss';
 
 const GrayHeader = () => {
 	const dispatch = useDispatch();
+
 	const userLogInDetails = useSelector((state) => state.userLogInDetails);
 	const { userInfo } = userLogInDetails;
+
 	const logoutHandler = () => {
 		dispatch(logout());
 		dispatch(resetWithProfile());

@@ -9,7 +9,7 @@ const initialState = {
 	cartItems: cart ? cart : [],
 	shippingAddress: shippingAddress
 		? shippingAddress
-		: { address: '', city: '', name: '' },
+		: { address: '', city: '', name: '', contactNo: '', email: '' },
 	itemsPrice: 0,
 	totalPrice: 0,
 	isError: false,
@@ -28,17 +28,16 @@ export const cartDataSlice = createSlice({
 			state.isSuccess = false;
 			state.message = '';
 		},
-		resetCartData: (state) => {
-			state.cartItems = cart ? cart : [];
+		resetCart: (state) => {
+			state.cartItems = [];
 			state.shippingAddress = shippingAddress
 				? shippingAddress
-				: { address: '', city: '' };
+				: { address: '', city: '', contactNo: '', email: '' };
 			state.itemsPrice = 0;
 			state.totalPrice = 0;
 		},
 		setPrices: (state, action) => {
 			state.itemsPrice = action.payload.itemsPrice;
-			state.shippingPrice = action.payload.shippingPrice;
 			state.totalPrice = action.payload.totalPrice;
 		},
 		savePaymentMethod: (state, action) => {
@@ -107,7 +106,7 @@ export const cartDataSlice = createSlice({
 
 export const {
 	resetCartStatus,
-	resetCartData,
+	resetCart,
 	removeFromCart,
 	addShippingAddress,
 	savePaymentMethod,

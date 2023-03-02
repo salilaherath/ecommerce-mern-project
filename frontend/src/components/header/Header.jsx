@@ -48,9 +48,7 @@ const Header = () => {
 							<span className="icon">
 								<ShoppingCartOutlinedIcon />
 							</span>
-							<span className="text">
-								{cartItems.reduce((acc, item) => acc + item.qty, 0)} Item(s)
-							</span>
+							<span className="text">{cartItems.length} Item(s)</span>
 						</button>
 					</div>
 				</div>

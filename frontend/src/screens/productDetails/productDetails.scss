@@ -56,9 +56,16 @@
 				font-weight: 600;
 				padding-bottom: 10px;
 			}
+
 			.stock {
 				font-size: 20px;
-				color: #11b400;
+				&.in-stock {
+					color: #11b400;
+				}
+
+				&.out-of-stock {
+					color: red;
+				}
 			}
 
 			.noItems {
@@ -81,6 +88,10 @@
 				border-bottom: 2px solid #e0e0e0;
 			}
 
+			.color {
+				margin-bottom: 20px;
+			}
+
 			.sizeText {
 				font-size: 20px;
 			}
@@ -88,7 +99,7 @@
 			.sizeBtn {
 				display: flex;
 				padding-bottom: 20px;
-				div {
+				.size {
 					height: 50px;
 					width: 50px;
 					margin-right: 20px;
@@ -99,23 +110,17 @@
 					justify-content: center;
 					cursor: pointer;
 					font-weight: 600;
+
+					&.selected {
+						color: white;
+						background-color: #ff4e00;
+						box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+					}
 				}
 			}
 
 			.colorText {
 				font-size: 20px;
-			}
-
-			.color {
-				// div {
-				//   height: 50px;
-				//   width: 50px;
-				//   margin-right: 20px;
-				//   border-radius: 15px;
-				//   display: flex;
-				//   align-items: center;
-				//   justify-content: center;
-				// }
 			}
 
 			.description {

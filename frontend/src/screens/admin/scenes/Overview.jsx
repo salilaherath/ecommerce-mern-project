@@ -2,10 +2,10 @@ import { Box, Button, IconButton, Typography, useTheme } from '@mui/material';
 import { tokens } from '../theme';
 import { mockTransactions } from '../../../data/mockData';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
-import EmailIcon from '@mui/icons-material/Email';
+import PaidIcon from '@mui/icons-material/Paid';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import TrafficIcon from '@mui/icons-material/Traffic';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import PeopleIcon from '@mui/icons-material/People';
 import Header from '../components/Header';
 import LineChart from '../components/LineChart';
 import BarChart from '../components/BarChart';
@@ -62,8 +62,8 @@ const Dashboard = () => {
 						progress="0.75"
 						increase="+14%"
 						icon={
-							<EmailIcon
-								sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
+							<PaidIcon
+								sx={{ color: colors.greenAccent[600], fontSize: '34px' }}
 							/>
 						}
 					/>
@@ -100,7 +100,7 @@ const Dashboard = () => {
 						progress="0.30"
 						increase="+5%"
 						icon={
-							<PersonAddIcon
+							<Inventory2Icon
 								sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
 							/>
 						}
@@ -119,8 +119,8 @@ const Dashboard = () => {
 						progress="0.80"
 						increase="+43%"
 						icon={
-							<TrafficIcon
-								sx={{ color: colors.greenAccent[600], fontSize: '26px' }}
+							<PeopleIcon
+								sx={{ color: colors.greenAccent[600], fontSize: '32px' }}
 							/>
 						}
 					/>
@@ -152,7 +152,7 @@ const Dashboard = () => {
 								fontWeight="bold"
 								color={colors.greenAccent[500]}
 							>
-								$59,342.32
+								Rs. 59,342.32
 							</Typography>
 						</Box>
 						<Box>
@@ -212,7 +212,7 @@ const Dashboard = () => {
 								p="5px 10px"
 								borderRadius="4px"
 							>
-								${transaction.cost}
+								Rs.{transaction.cost}
 							</Box>
 						</Box>
 					))}
@@ -240,7 +240,7 @@ const Dashboard = () => {
 							color={colors.greenAccent[500]}
 							sx={{ mt: '15px' }}
 						>
-							$48,352 revenue generated
+							Rs. 48,352 revenue generated
 						</Typography>
 						<Typography>Includes extra misc expenditures and costs</Typography>
 					</Box>
