@@ -1,0 +1,46 @@
+.home {
+	.title {
+		font-size: 48px;
+		font-weight: 600;
+		color: #707070;
+		text-align: center;
+		margin: 20px;
+	}
+
+	.categories {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		ul {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 50px;
+
+			.item {
+				list-style: none;
+				font-size: 18px;
+				font-weight: 500;
+				color: #707070;
+				cursor: pointer;
+				transition: color 0.2s;
+
+				&:hover {
+					color: #ff4e00;
+				}
+
+				&.active {
+					color: #ff4e00;
+				}
+			}
+		}
+	}
+
+	.hl {
+		margin-top: 20px;
+		margin-bottom: 30px;
+		width: 100%;
+		border-bottom: 1px solid #e0e0e0;
+	}
+}

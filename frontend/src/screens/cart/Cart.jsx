@@ -27,11 +27,11 @@ const Cart = () => {
 	const cart = useSelector((state) => state.cart);
 	const { cartItems, isLoading, isError } = cart;
 
-	useEffect(() => {
-		if (proID) {
-			dispatch(addToCart(ob));
-		}
-	}, [dispatch, proID, qty]);
+	// useEffect(() => {
+	// 	if (proID) {
+	// 		dispatch(addToCart(ob));
+	// 	}
+	// }, [dispatch, proID, qty]);
 
 	const removeFromCartHandler = (id) => {
 		console.log('remove');
@@ -126,18 +126,6 @@ const Cart = () => {
 									</td>
 								</tr>
 							</table>
-							{/* <StripeCheckout
-                name='Vintage Clothing'
-                image='https://i.ibb.co/0YmR3b8/3736-Converted.png'
-                billingAddress
-                shippingAddress
-                description={`Your total is Rs. ${cart.total}.00`}
-                amount={cart.total * 100}
-                // token={onToken}
-                stripeKey={KEY}
-                currency='LKR'>
-                <button className='checkout-btn'>CHECKOUT NOW</button>
-              </StripeCheckout> */}
 							<button className="checkout-btn" onClick={handleCheckout}>
 								CHECKOUT NOW
 							</button>

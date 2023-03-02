@@ -22,10 +22,6 @@ const productSchema = new mongoose.Schema(
 		brand: { type: String, required: true },
 		mainCategory: { type: String, required: true },
 		subCategory: { type: String, required: true },
-		// size: { type: String, required: true },
-		// color: { type: String, required: true },
-		//size: { type: Array },
-		//color: { type: Array },
 		variation: [
 			{
 				color: { type: String, required: true },
@@ -34,7 +30,6 @@ const productSchema = new mongoose.Schema(
 			},
 		],
 		price: { type: Number, required: true },
-		//countInStock: { type: Number, required: true },
 		reviews: [reviewSchema],
 		rating: { type: Number, required: true, default: 0 },
 		numReviews: { type: Number, required: true, default: 0 },

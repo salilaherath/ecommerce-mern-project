@@ -2,7 +2,6 @@ import { Avatar, Box, Button, useTheme } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { tokens } from '../theme';
 import Header from '../components/Header';
-import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
@@ -32,6 +31,10 @@ const Products = () => {
 
 	const navigateAddProducts = () => {
 		navigate('/dashboard/addProducts');
+	};
+
+	const navigateToEdit = () => {
+		navigate('/dashboard/editProducts');
 	};
 
 	const deleteItem = (id) => {
@@ -138,7 +141,7 @@ const Products = () => {
 								<DeleteIcon />
 							</Button>
 						</Popconfirm>
-						<Button sx={{ color: colors.grey[100] }}>
+						<Button sx={{ color: colors.grey[100] }} onClick={navigateToEdit}>
 							<EditIcon />
 						</Button>
 					</>

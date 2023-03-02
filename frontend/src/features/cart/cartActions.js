@@ -5,7 +5,13 @@ import cartDataService from './cartDataService';
 export const addToCart = createAsyncThunk('cart/add', async (ob, thunkAPI) => {
 	try {
 		//console.log(ob)
-		return await cartDataService.checkCart(ob.id, ob.qty, ob.color, ob.size);
+		return await cartDataService.checkCart(
+			ob.id,
+			ob.qty,
+			ob.color,
+			ob.size,
+			ob.variant
+		);
 	} catch (error) {
 		const message =
 			(error.response && error.response.data && error.response.data.message) ||

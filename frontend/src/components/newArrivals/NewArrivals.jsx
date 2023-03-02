@@ -1,46 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import './newArrivals.scss';
 import ProductCard from '../productCard/ProductCard';
 //import { listProducts } from '../../actions/productActions';
 import { CircularProgress } from '@mui/material';
-import { listProducts } from '../../features/products/productListDataSlice';
+import { fetchLatestProducts } from '../../features/products/latestProductsSlice';
 
-const NewArrivals = () => {
+const NewArrivals = ({ category }) => {
+	// const dispatch = useDispatch();
+
+	// const productList = useSelector((state) => state.productList);
+	// //const { loading, error, products } = productList;
+
+	// useEffect(() => {
+	// 	dispatch(listProducts());
+	// }, [dispatch]);
+
+	// const [products, setProducts] = useState([]);
+
+	// useEffect(() => {
+	// 	async function fetchLatestProducts() {
+	// 		const response = await axios.get('/api/products/latest');
+	// 		setProducts(response.data);
+	// 	}
+
+	// 	fetchLatestProducts();
+	// }, []);
+
 	const dispatch = useDispatch();
-
-	const productList = useSelector((state) => state.productList);
-	//const { loading, error, products } = productList;
-	const { isLoading, isError, products, isSuccess, message } = productList;
+	const latestProducts = useSelector((state) => state.latestProducts.products);
+	//const { isLoading, isError, isSuccess, message } = latestProducts;
 
 	useEffect(() => {
-		dispatch(listProducts());
-	}, [dispatch]);
+		dispatch(fetchLatestProducts(category));
+	}, [dispatch, category]);
 
 	return (
 		<div>
 			<div className="newArrival">
-				<div className="title">NEW ARRIVALS</div>
-				<div className="categories">
-					<ul>
-						<li className="item">Men</li>
-						<li className="item">Women</li>
-						<li className="item">Kids</li>
-						<li className="item">Sale</li>
-					</ul>
-				</div>
-				<div className="hl"></div>
-				{isLoading ? (
+				{/* {isLoading ? (
 					<CircularProgress />
 				) : isError ? (
 					<h3>{Error}</h3>
-				) : (
-					<div className="products">
-						{products.map((product) => (
-							<ProductCard product={product} key={product._id} />
-						))}
-					</div>
-				)}
+				) : ( */}
+				<div className="products">
+					{latestProducts.map((product) => (
+						<ProductCard product={product} key={product._id} />
+					))}
+				</div>
+				{/* )} */}
 			</div>
 		</div>
 	);

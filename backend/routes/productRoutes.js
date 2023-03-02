@@ -4,6 +4,7 @@ const router = express.Router();
 import {
 	createProduct,
 	deleteProduct,
+	getLatestProducts,
 	getProducts,
 	getProductsById,
 	updateProduct,
@@ -22,11 +23,11 @@ const uploadImage = multer({
 }).single('image');
 
 router.route('/').get(getProducts);
+router.route('/latest').get(getLatestProducts);
 router
 	.route('/:id')
 	.get(getProductsById)
 	.put(protect, isAdmin, updateProduct)
 	.delete(protect, isAdmin, deleteProduct);
 router.route('/').post(protect, isAdmin, uploadImage, createProduct);
-
 export default router;

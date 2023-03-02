@@ -25,3 +25,18 @@
 ::-webkit-scrollbar-track:hover {
 	background: #555;
 }
+
+*:not(input):not(textarea) {
+	-webkit-user-select: none; /* Chrome, Safari, Opera */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE/Edge */
+	user-select: none;
+}
+
+/* enable text selection for specific elements */
+.your-element {
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+}

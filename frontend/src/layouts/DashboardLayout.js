@@ -12,6 +12,7 @@ import { ColorModeContext, useMode } from '../screens/admin/theme';
 import './styles.scss';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import EditProducts from '../screens/admin/scenes/EditProducts';
 
 const DashboardLayout = () => {
 	const [theme, colorMode] = useMode();
@@ -44,6 +45,7 @@ const DashboardLayout = () => {
 										<Route index element={<Overview />} />
 										<Route path="products" element={<Products />} />
 										<Route path="addProducts" element={<AddProducts />} />
+										<Route path="editProducts" element={<EditProducts />} />
 										<Route path="customers" element={<Customers />} />
 										<Route path="orders" element={<Orders />} />
 										<Route path="charts" element={<Charts />} />

@@ -4,10 +4,16 @@ import { tokens } from '../theme';
 import Header from '../components/Header';
 import { useEffect, useState } from 'react';
 import userService from '../../../features/users/userService';
+import { Switch } from 'antd';
 
 const Customers = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const onChange = (checked) => {
+		console.log(`switch to ${checked}`);
+	};
+
 	const columns = [
 		{ field: '_id', headerName: 'ID', flex: 1 },
 		{
@@ -33,8 +39,9 @@ const Customers = () => {
 			flex: 1,
 		},
 		{
-			field: 'actions',
-			headerName: 'Actions',
+			field: 'makeAdmin',
+			headerName: 'Make Admin',
+			renderCell: (params) => <Switch unChecked onChange={onChange} />,
 			flex: 1,
 		},
 	];
@@ -54,10 +61,7 @@ const Customers = () => {
 
 	return (
 		<Box m="20px">
-			<Header
-				title="CUSTOMERS"
-				subtitle="Manage Customers of Vintage Clothing"
-			/>
+			<Header title="USERS" subtitle="Manage Users of Vintage Clothing" />
 			<Box
 				m="40px 0 0 0"
 				height="75vh"

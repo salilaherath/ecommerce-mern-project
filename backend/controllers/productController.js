@@ -61,6 +61,26 @@ const getProducts = asyncHandler(async (req, res) => {
 	res.json(products);
 });
 
+// @desc Fetch latest 8 products
+// @route GET /api/products/latest
+// @access Public
+const getLatestProducts = asyncHandler(async (req, res) => {
+	// try {
+	// 	const latestProducts = await Product.find()
+	// 		.sort({ createdAt: -1 })
+	// 		.limit(8);
+	// 	res.json(latestProducts);
+	// } catch (error) {
+	// 	res.status(404);
+	// 	throw new Error('Products not found');
+	// }
+	const category = req.query.category || '';
+	const latestProducts = await Product.find({ mainCategory: category })
+		.sort({ createdAt: -1 })
+		.limit(8);
+	res.json(latestProducts);
+});
+
 // @desc Fetch single product
 // @route GET /api/products/:id
 // @access Public
@@ -123,4 +143,5 @@ export {
 	getProductsById,
 	updateProduct,
 	deleteProduct,
+	getLatestProducts,
 };

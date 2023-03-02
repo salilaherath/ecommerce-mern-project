@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
 					</div>
 
 					<div className="sRow">
-						<div className="price">Rs. {product.price}</div>
+						<div className="price">Rs. {product.price}.00</div>
 						<Rating value={product.rating} precision={0.5} readOnly />
 					</div>
 				</div>
