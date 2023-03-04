@@ -1,36 +1,56 @@
 import { Box, useTheme } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { tokens } from '../theme';
-import { mockDataTeam } from '../../../data/mockData';
 import Header from '../components/Header';
 import { Select, Button } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import orderService from '../../../features/orders/orderService';
 
 const Orders = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+
+	const [orders, setOrders] = useState([]);
+
+	const transformOrderData = (orders) => {
+		return orders.map((order) => {
+			return {
+				...order,
+				'user.email': order.user.email,
+				'shippingAddress.address': order.shippingAddress.address,
+			};
+		});
+	};
+
+	useEffect(() => {
+		orderService.getOrders().then((data) => {
+			setOrders(transformOrderData(data));
+		});
+	}, []);
+
 	const columns = [
-		{ field: 'id', headerName: 'ID' },
+		{ field: '_id', headerName: 'ID', flex: 0.6 },
 		{
-			field: 'name',
-			headerName: 'Customer Name',
+			field: 'user.email',
+			headerName: 'Customer Email',
 			flex: 0.5,
 			cellClassName: 'name-column--cell',
 		},
 		{
-			field: 'address',
+			field: 'shippingAddress.address',
 			headerName: 'Delivery Address',
 			headerAlign: 'left',
 			align: 'left',
 			flex: 0.7,
 		},
+		// {
+		// 	field: 'phone',
+		// 	headerName: 'Contact Number',
+		// 	flex: 0.5,
+		// },
 		{
-			field: 'phone',
-			headerName: 'Contact Number',
-			flex: 0.5,
-		},
-		{
-			field: 'total',
+			field: 'totalPrice',
 			headerName: 'Total (Rs)',
 			flex: 0.5,
 		},
@@ -94,7 +114,12 @@ const Orders = () => {
 					},
 				}}
 			>
-				<DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+				<DataGrid
+					checkboxSelection
+					getRowId={(row) => row._id}
+					rows={orders || []}
+					columns={columns}
+				/>
 			</Box>
 		</Box>
 	);
