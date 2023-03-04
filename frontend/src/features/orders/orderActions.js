@@ -6,7 +6,6 @@ export const createOrder = createAsyncThunk(
 	'order/add',
 	async (object, thunkAPI) => {
 		try {
-			// console.log('createOrdergetCalled')
 			const response = await orderDataService.makeOrder(object);
 			return response;
 		} catch (error) {
@@ -38,6 +37,7 @@ export const getOrderById = createAsyncThunk(
 		}
 	}
 );
+
 //pay order by id
 export const payOrder = createAsyncThunk(
 	'order/pay',
