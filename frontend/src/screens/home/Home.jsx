@@ -4,7 +4,7 @@ import HomeGrid from '../../components/homeGrid/HomeGrid';
 import NewArrivals from '../../components/newArrivals/NewArrivals';
 
 const Home = () => {
-	const [category, setCategory] = useState('Men');
+	const [category, setCategory] = useState('MEN');
 
 	const handleCategoryChange = (newCategory) => {
 		setCategory(newCategory);
@@ -16,23 +16,23 @@ const Home = () => {
 			<div className="categories">
 				<ul>
 					<li
-						className={`item ${category === 'Men' ? 'active' : ''}`}
-						onClick={() => handleCategoryChange('Men')}
+						className={`item ${category === 'MEN' ? 'active' : ''}`}
+						onClick={() => handleCategoryChange('MEN')}
 					>
 						Men
 					</li>
 					<li
-						className={`item ${category === 'Women' ? 'active' : ''}`}
-						onClick={() => handleCategoryChange('Women')}
+						className={`item ${category === 'WOMEN' ? 'active' : ''}`}
+						onClick={() => handleCategoryChange('WOMEN')}
 					>
 						Women
 					</li>
-					<li
+					{/* <li
 						className={`item ${category === 'Kids' ? 'active' : ''}`}
 						onClick={() => handleCategoryChange('Kids')}
 					>
 						Kids
-					</li>
+					</li> */}
 				</ul>
 			</div>
 			<div className="hl"></div>

@@ -56,6 +56,14 @@ const createProduct = asyncHandler(async (req, res) => {
 // @desc Fetch all products
 // @route GET /api/products
 // @access Public
+// const getProducts = asyncHandler(async (req, res) => {
+// 	const products = await Product.find({});
+// 	res.json(products);
+// });
+
+// @desc Fetch all products with filters
+// @route GET /api/products
+// @access Public
 const getProducts = asyncHandler(async (req, res) => {
 	const products = await Product.find({});
 	res.json(products);
