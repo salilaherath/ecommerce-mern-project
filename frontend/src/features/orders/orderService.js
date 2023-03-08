@@ -12,7 +12,16 @@ const getOrders = async () => {
 
 	const response = await axios.get('/api/orders', config);
 	if (response.data) {
-		localStorage.setItem('orders', JSON.stringify(response.data));
+		const orders = response.data.orders;
+		const totalRevenue = orders.reduce(
+			(acc, order) => acc + order.totalPrice,
+			0
+		);
+		localStorage.setItem('orders', JSON.stringify(orders));
+		return {
+			orders,
+			totalRevenue,
+		};
 	}
 
 	return response.data;

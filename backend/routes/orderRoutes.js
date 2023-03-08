@@ -4,6 +4,7 @@ import {
 	getAllOrders,
 	getMyOrders,
 	getOrderByID,
+	updateOrderStatus,
 	updateOrderToDelivered,
 } from '../controllers/orderController.js';
 
@@ -17,5 +18,6 @@ router
 router.route('/myorders').get(protect, getMyOrders);
 router.route('/:id').get(protect, getOrderByID);
 router.route('/:id/deliver').put(protect, updateOrderToDelivered);
+router.route('/:id/status').put(protect, isAdmin, updateOrderStatus);
 
 export default router;

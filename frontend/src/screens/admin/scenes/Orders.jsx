@@ -17,23 +17,41 @@ const Orders = () => {
 		return orders.map((order) => {
 			return {
 				...order,
-				'user.email': order.user.email,
+				'shippingAddress.name': order.shippingAddress.name,
 				'shippingAddress.address': order.shippingAddress.address,
+				'shippingAddress.contactNo': order.shippingAddress.contactNo,
 			};
 		});
 	};
 
 	useEffect(() => {
 		orderService.getOrders().then((data) => {
-			setOrders(transformOrderData(data));
+			setOrders(transformOrderData(data.orders));
 		});
 	}, []);
+
+	// const handleChange = (e, params) => {
+	// 	const updatedStatus = e.target.value;
+	// 	const orderId = params.id;
+
+	// 	// Make a request to update the order status
+	// 	axios
+	// 		.put(`/api/orders/${orderId}/status`, { status: updatedStatus })
+	// 		.then((res) => {
+	// 			console.log('Order status updated successfully!');
+	// 			// You can also update the UI to show the updated status
+	// 		})
+	// 		.catch((err) => {
+	// 			console.error('Error updating order status:', err);
+	// 			// You can show an error message to the user
+	// 		});
+	// };
 
 	const columns = [
 		{ field: '_id', headerName: 'ID', flex: 0.6 },
 		{
-			field: 'user.email',
-			headerName: 'Customer Email',
+			field: 'shippingAddress.name',
+			headerName: 'Name',
 			flex: 0.5,
 			cellClassName: 'name-column--cell',
 		},
@@ -44,32 +62,32 @@ const Orders = () => {
 			align: 'left',
 			flex: 0.7,
 		},
-		// {
-		// 	field: 'phone',
-		// 	headerName: 'Contact Number',
-		// 	flex: 0.5,
-		// },
+		{
+			field: 'shippingAddress.contactNo',
+			headerName: 'Contact Number',
+			flex: 0.5,
+		},
 		{
 			field: 'totalPrice',
 			headerName: 'Total (Rs)',
 			flex: 0.5,
 		},
 		{
-			field: 'status',
+			field: 'orderStatus',
 			headerName: 'Order Status',
-			renderCell: (params) => (
-				<Select
-					defaultValue="Ordered"
-					style={{ width: 120 }}
-					// onChange={handleChange}
-					options={[
-						{ value: 'ordered', label: 'Ordered' },
-						{ value: 'packed', label: 'Packed' },
-						{ value: 'shipped', label: 'Shipped' },
-						{ value: 'delivered', label: 'Delivered' },
-					]}
-				/>
-			),
+			// renderCell: (params) => (
+			// 	<Select
+			// 		defaultValue={orders.orderStatus}
+			// 		style={{ width: 120 }}
+			// 		onChange={(e) => handleChange(e, params)}
+			// 		options={[
+			// 			{ value: 'ordered', label: 'Ordered' },
+			// 			{ value: 'packed', label: 'Packed' },
+			// 			{ value: 'shipped', label: 'Shipped' },
+			// 			{ value: 'delivered', label: 'Delivered' },
+			// 		]}
+			// 	/>
+			// ),
 			flex: 1,
 		},
 		{
@@ -115,10 +133,12 @@ const Orders = () => {
 				}}
 			>
 				<DataGrid
-					checkboxSelection
 					getRowId={(row) => row._id}
 					rows={orders || []}
 					columns={columns}
+					pagination
+					rowsPerPageOptions={[10, 25, 50]}
+					pageSize={10}
 				/>
 			</Box>
 		</Box>
