@@ -17,18 +17,35 @@ const getOrders = async () => {
 			(acc, order) => acc + order.totalPrice,
 			0
 		);
+		const totalOrders = response.data.totalOrders;
 		localStorage.setItem('orders', JSON.stringify(orders));
 		return {
 			orders,
 			totalRevenue,
+			totalOrders,
 		};
 	}
 
 	return response.data;
 };
 
+//Retrieve latest 8 orders
+const getLatestOrders = async () => {
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+
+	const response = await axios.get('/api/orders/latest', config);
+	return response.data;
+};
+
 const orderService = {
 	getOrders,
+	getLatestOrders,
 };
 
 export default orderService;

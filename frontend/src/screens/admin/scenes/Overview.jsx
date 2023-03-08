@@ -13,15 +13,38 @@ import StatBox from '../components/StatBox';
 import ProgressCircle from '../components/ProgressCircle';
 import orderService from '../../../features/orders/orderService';
 import { useEffect, useState } from 'react';
+import productService from '../../../features/products/productService';
+import userService from '../../../features/users/userService';
 
 const Dashboard = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const [revenue, setRevenue] = useState([]);
+	const [totalOrders, setTotalOrders] = useState(0);
+	const [orders, setOrders] = useState([]);
+	const [totalProducts, setTotalProducts] = useState(0);
+	const [totalCustomers, setTotalCustomers] = useState(0);
 
 	useEffect(() => {
 		orderService.getOrders().then((data) => {
 			setRevenue(data.totalRevenue);
+			setTotalOrders(data.totalOrders);
+		});
+
+		orderService.getLatestOrders().then((data) => {
+			const formattedData = data.map((order) => {
+				const formattedDate = new Date(order.createdAt).toLocaleDateString();
+				return { ...order, createdAt: formattedDate };
+			});
+			setOrders(formattedData);
+		});
+
+		productService.getTotalProducts().then((data) => {
+			setTotalProducts(data);
+		});
+
+		userService.getCountOfCustomers().then((data) => {
+			setTotalCustomers(data);
 		});
 	}, []);
 
@@ -85,7 +108,7 @@ const Dashboard = () => {
 					justifyContent="center"
 				>
 					<StatBox
-						title="43"
+						title={totalOrders}
 						subtitle="Total Orders"
 						progress="0.50"
 						increase="+21%"
@@ -104,7 +127,7 @@ const Dashboard = () => {
 					justifyContent="center"
 				>
 					<StatBox
-						title="32"
+						title={totalProducts}
 						subtitle="Total Products"
 						progress="0.30"
 						increase="+5%"
@@ -123,7 +146,7 @@ const Dashboard = () => {
 					justifyContent="center"
 				>
 					<StatBox
-						title="35"
+						title={totalCustomers}
 						subtitle="Total Customers"
 						progress="0.80"
 						increase="+43%"
@@ -161,7 +184,7 @@ const Dashboard = () => {
 								fontWeight="bold"
 								color={colors.greenAccent[500]}
 							>
-								Rs. 59,342.32
+								Rs. {revenue}.00
 							</Typography>
 						</Box>
 						<Box>
@@ -194,9 +217,9 @@ const Dashboard = () => {
 							Recent Transactions
 						</Typography>
 					</Box>
-					{mockTransactions.map((transaction, i) => (
+					{orders.map((transaction) => (
 						<Box
-							key={`${transaction.txId}-${i}`}
+							key={transaction._id}
 							display="flex"
 							justifyContent="space-between"
 							alignItems="center"
@@ -209,19 +232,19 @@ const Dashboard = () => {
 									variant="h5"
 									fontWeight="600"
 								>
-									{transaction.txId}
+									{transaction._id}
 								</Typography>
 								<Typography color={colors.grey[100]}>
-									{transaction.user}
+									{transaction.shippingAddress.name}
 								</Typography>
 							</Box>
-							<Box color={colors.grey[100]}>{transaction.date}</Box>
+							<Box color={colors.grey[100]}>{transaction.createdAt}</Box>
 							<Box
 								backgroundColor={colors.greenAccent[500]}
 								p="5px 10px"
 								borderRadius="4px"
 							>
-								Rs.{transaction.cost}
+								Rs. {transaction.totalPrice}
 							</Box>
 						</Box>
 					))}

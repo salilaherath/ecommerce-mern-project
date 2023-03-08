@@ -48,11 +48,24 @@ const getCustomers = async () => {
 	return response.data;
 };
 
+const getCountOfCustomers = async () => {
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+	const response = await axios.get(`/api/users/customers/count`, config);
+	return response.data;
+};
+
 const userService = {
 	login,
 	register,
 	getProfile,
 	updateProfile,
 	getCustomers,
+	getCountOfCustomers,
 };
 export default userService;

@@ -143,10 +143,19 @@ const getAllOrders = asyncHandler(async (req, res) => {
 		orders.forEach((order) => {
 			totalRevenue += order.totalPrice;
 		});
-		res.status(200).json({ orders, totalRevenue });
+
+		const totalOrders = await Order.countDocuments();
+
+		res.status(200).json({ orders, totalRevenue, totalOrders });
 	} catch (error) {
 		throw new Error(error);
 	}
+});
+
+//GET Latest 8 orders
+const getLatestOrders = asyncHandler(async (req, res) => {
+	const latestOrders = await Order.find().sort({ createdAt: -1 }).limit(8);
+	res.json(latestOrders);
 });
 
 export {
@@ -156,4 +165,5 @@ export {
 	getMyOrders,
 	getAllOrders,
 	updateOrderStatus,
+	getLatestOrders,
 };

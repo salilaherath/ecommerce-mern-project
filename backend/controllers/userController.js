@@ -124,6 +124,17 @@ const getCustomers = asyncHandler(async (req, res) => {
 	}
 });
 
+//GET Customers count
+const getCountOfCustomers = asyncHandler(async (req, res) => {
+	try {
+		const count = await User.countDocuments({ isAdmin: false });
+		res.json(count);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
 // @desc Get a single user
 // @route GET /api/users/:id
 // @access Private/Admin
@@ -161,4 +172,5 @@ export {
 	deleteUser,
 	updateUserProfile,
 	getCustomers,
+	getCountOfCustomers,
 };
