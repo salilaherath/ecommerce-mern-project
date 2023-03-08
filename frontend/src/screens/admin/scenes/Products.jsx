@@ -109,7 +109,6 @@ const Products = () => {
 					</div>
 				);
 			},
-			// valueGetter: (products) => products.row.variation.color,
 		},
 		{
 			field: 'numReviews',
@@ -212,17 +211,13 @@ const Products = () => {
 					rows={products || []}
 					columns={columns}
 					components={{ Toolbar: GridToolbar }}
-					// onSelectionModelChange={(ids) => {
-					// 	const selectedIDs = new Set(ids);
-					// 	const selectedRowData = products.filter((row) =>
-					// 		selectedIDs.has(row._id.toString())
-					// 	);
-					// 	console.log(selectedRowData);
-					// }}
 					onSelectionModelChange={(newSelectionModel) => {
 						setSelectionModel(newSelectionModel);
 					}}
 					selectionModel={selectionModel}
+					pagination
+					rowsPerPageOptions={[10, 25, 50]}
+					pageSize={10}
 				/>
 			</Box>
 		</Box>

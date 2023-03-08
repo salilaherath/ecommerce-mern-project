@@ -95,6 +95,27 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc    Update order status
+// @route   POST /api/orders/:id/status
+// @access  Private Admin
+const updateOrderStatus = asyncHandler(async (req, res) => {
+	try {
+		const updatedOrder = await Order.findByIdAndUpdate(
+			req.params.id,
+			{ orderStatus: req.body.orderStatus },
+			{ new: true }
+		);
+		if (!updatedOrder) {
+			return res.status(404).send({ message: 'Order not found' });
+		}
+
+		res.json({ orderStatus: updatedOrder.orderStatus });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send({ message: 'Error updating order status' });
+	}
+});
+
 // @desc    Get logged in user orders
 // @route   GET /api/orders/myorders
 // @access  Private
@@ -107,15 +128,25 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getAllOrders = asyncHandler(async (req, res) => {
-	const orders = await Order.find()
-		.populate({
-			path: 'user',
-			select: '_id email',
-		})
-		.sort({ delivery: 1 })
-		.sort({ shipping: 1 })
-		.sort({ createdAt: -1 });
-	res.status(200).json(orders);
+	try {
+		const orders = await Order.find()
+			.populate({
+				path: 'user',
+				select: '_id email',
+			})
+			.sort({ delivery: 1 })
+			.sort({ shipping: 1 })
+			.sort({ createdAt: -1 });
+
+		let totalRevenue = 0;
+
+		orders.forEach((order) => {
+			totalRevenue += order.totalPrice;
+		});
+		res.status(200).json({ orders, totalRevenue });
+	} catch (error) {
+		throw new Error(error);
+	}
 });
 
 export {
@@ -124,4 +155,5 @@ export {
 	updateOrderToDelivered,
 	getMyOrders,
 	getAllOrders,
+	updateOrderStatus,
 };

@@ -11,10 +11,19 @@ import LineChart from '../components/LineChart';
 import BarChart from '../components/BarChart';
 import StatBox from '../components/StatBox';
 import ProgressCircle from '../components/ProgressCircle';
+import orderService from '../../../features/orders/orderService';
+import { useEffect, useState } from 'react';
 
 const Dashboard = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	const [revenue, setRevenue] = useState([]);
+
+	useEffect(() => {
+		orderService.getOrders().then((data) => {
+			setRevenue(data.totalRevenue);
+		});
+	}, []);
 
 	return (
 		<Box m="20px">
@@ -57,7 +66,7 @@ const Dashboard = () => {
 					justifyContent="center"
 				>
 					<StatBox
-						title="RS. 12,361"
+						title={`Rs. ${revenue}.00`}
 						subtitle="Total Revenue"
 						progress="0.75"
 						increase="+14%"
