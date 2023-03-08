@@ -9,6 +9,7 @@ import {
 	deleteUser,
 	updateUserProfile,
 	getCustomers,
+	getCountOfCustomers,
 } from '../controllers/userController.js';
 import { protect, isAdmin } from '../middleware/authMiddleware.js';
 
@@ -19,6 +20,7 @@ router
 	.get(protect, getUserProfile)
 	.put(protect, updateUserProfile);
 router.route('/customers').get(protect, isAdmin, getCustomers);
+router.route('/customers/count').get(protect, isAdmin, getCountOfCustomers);
 router
 	.route('/:id')
 	.get(protect, isAdmin, getUser)

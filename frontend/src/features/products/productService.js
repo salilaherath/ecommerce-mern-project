@@ -22,6 +22,12 @@ const getProducts = async () => {
 	return response.data;
 };
 
+//retrieve total products
+const getTotalProducts = async () => {
+	const response = await axios.get('api/products/total');
+	return response.data;
+};
+
 //Add products
 const addProducts = async (obj) => {
 	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -53,5 +59,6 @@ const productService = {
 	listProduct,
 	addProducts,
 	deleteProducts,
+	getTotalProducts,
 };
 export default productService;

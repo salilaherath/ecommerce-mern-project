@@ -2,6 +2,7 @@ import express from 'express';
 import {
 	addOrderItems,
 	getAllOrders,
+	getLatestOrders,
 	getMyOrders,
 	getOrderByID,
 	updateOrderStatus,
@@ -15,6 +16,7 @@ router
 	.route('/')
 	.post(protect, addOrderItems)
 	.get(protect, isAdmin, getAllOrders);
+router.route('/latest').get(protect, isAdmin, getLatestOrders);
 router.route('/myorders').get(protect, getMyOrders);
 router.route('/:id').get(protect, getOrderByID);
 router.route('/:id/deliver').put(protect, updateOrderToDelivered);

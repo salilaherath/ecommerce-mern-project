@@ -69,19 +69,16 @@ const getProducts = asyncHandler(async (req, res) => {
 	res.json(products);
 });
 
+//get total products
+const getTotalProducts = asyncHandler(async (req, res) => {
+	const totalProducts = await Product.countDocuments();
+	res.json(totalProducts);
+});
+
 // @desc Fetch latest 8 products
 // @route GET /api/products/latest
 // @access Public
 const getLatestProducts = asyncHandler(async (req, res) => {
-	// try {
-	// 	const latestProducts = await Product.find()
-	// 		.sort({ createdAt: -1 })
-	// 		.limit(8);
-	// 	res.json(latestProducts);
-	// } catch (error) {
-	// 	res.status(404);
-	// 	throw new Error('Products not found');
-	// }
 	const category = req.query.category || '';
 	const latestProducts = await Product.find({ mainCategory: category })
 		.sort({ createdAt: -1 })
@@ -152,4 +149,5 @@ export {
 	updateProduct,
 	deleteProduct,
 	getLatestProducts,
+	getTotalProducts,
 };
