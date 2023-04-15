@@ -70,7 +70,6 @@ const getProductsByCategory = async (req, res) => {
 		main,
 		sub,
 		color,
-		size,
 		page = 1,
 		limit = 9,
 		search = '',
@@ -79,18 +78,15 @@ const getProductsByCategory = async (req, res) => {
 
 	const categoryFilter = {};
 	if (main) {
-		categoryFilter.mainCategory = main;
+		categoryFilter.mainCategory = { $in: main.split(',') };
 	}
 	if (sub) {
-		categoryFilter.subCategory = sub;
+		categoryFilter.subCategory = { $in: sub.split(',') };
 	}
 
 	const variationFilter = {};
 	if (color) {
-		variationFilter['variation.color'] = color;
-	}
-	if (size) {
-		variationFilter['variation.size'] = size;
+		variationFilter.color = { $in: color.split(',') };
 	}
 
 	const searchFilter = {};
