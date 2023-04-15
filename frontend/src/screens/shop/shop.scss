@@ -48,8 +48,15 @@
 
 		.products {
 			display: flex;
-			gap: 20px;
-			flex-wrap: wrap;
+			flex-direction: column;
+			align-items: center;
+			gap: 30px;
+
+			.product_cards {
+				display: flex;
+				gap: 20px;
+				flex-wrap: wrap;
+			}
 		}
 	}
 }

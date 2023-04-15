@@ -8,6 +8,7 @@ import Slider from '@mui/material/Slider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { listProducts } from '../../features/products/productListDataSlice';
 import { CircularProgress } from '@mui/material';
+import Pagination from '@mui/material/Pagination';
 import { Checkbox } from 'antd';
 
 const theme = createTheme({
@@ -155,33 +156,6 @@ const Shop = () => {
 								marginInlineStart: 0,
 							}}
 						/>
-
-						{/* <FormGroup name='color' onChange={handleFilters}>
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='BLACK'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='GREY'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='RED'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='BLUE'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='YELLOW'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='GREEN'
-            />
-          </FormGroup> */}
 					</div>
 					<div className="colors">
 						<h3>SIZE</h3>
@@ -199,24 +173,6 @@ const Shop = () => {
 							<option value="L">L</option>
 							<option value="XL">XL</option>
 						</select>
-						{/* <FormGroup name='size' onChange={handleFilters}>
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='S'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='M'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='L'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='XL'
-            />
-          </FormGroup> */}
 					</div>
 					<div className="colors">
 						<h3>Sort Products:</h3>
@@ -234,9 +190,14 @@ const Shop = () => {
 					<h3>{Error}</h3>
 				) : (
 					<div className="products">
-						{products.map((product) => (
-							<ProductCard product={product} key={product._id} />
-						))}
+						<div className="product_cards">
+							{products.map((product) => (
+								<ProductCard product={product} key={product._id} />
+							))}
+						</div>
+						<ThemeProvider theme={theme}>
+							<Pagination count={10} shape="rounded" color="primary" />
+						</ThemeProvider>
 					</div>
 				)}
 
