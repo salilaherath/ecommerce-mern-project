@@ -23,6 +23,18 @@ const getAllCategories = async (req, res) => {
 	}
 };
 
+//Get all subcategories
+const getAllSubCategories = async (req, res) => {
+	try {
+		const subCategories = await Category.findOne({
+			title: req.params.mainCategory,
+		}).select('subCategories');
+		res.status(200).json(subCategories);
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
+};
+
 //Get category by ID
 const getCategoryById = async (req, res) => {
 	try {
@@ -36,4 +48,4 @@ const getCategoryById = async (req, res) => {
 	}
 };
 
-export { addCategory, getAllCategories, getCategoryById };
+export { addCategory, getAllCategories, getCategoryById, getAllSubCategories };

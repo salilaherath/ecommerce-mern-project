@@ -3,9 +3,9 @@ import axios from 'axios';
 
 export const fetchFilteredProducts = createAsyncThunk(
 	'products/productsByFilters',
-	async ({ page, limit, main, sub, color }) => {
+	async ({ page, limit, main, sub, color, priceRange }) => {
 		const response = await axios.get(
-			`/api/products/productsByFilters?page=${page}&limit=${limit}&main=${main}&sub=${sub}&color=${color}`
+			`/api/products/productsByFilters?page=${page}&limit=${limit}&main=${main}&sub=${sub}&color=${color}&priceRange=${priceRange}`
 		);
 		return response.data;
 	}
@@ -24,6 +24,7 @@ const filteredProductsSlice = createSlice({
 			main: [],
 			sub: [],
 			color: [],
+			priceRange: [1000, 9000],
 		},
 	},
 	reducers: {
@@ -38,6 +39,9 @@ const filteredProductsSlice = createSlice({
 		},
 		setColorFilters: (state, action) => {
 			state.filters.color = action.payload;
+		},
+		setPriceRange: (state, action) => {
+			state.filters.priceRange = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
@@ -63,5 +67,6 @@ export const {
 	setMainFilters,
 	setSubFilters,
 	setColorFilters,
+	setPriceRange,
 } = filteredProductsSlice.actions;
 export default filteredProductsSlice.reducer;

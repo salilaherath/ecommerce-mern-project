@@ -24,10 +24,6 @@ const theme = createTheme({
 	},
 });
 
-function valuetext(value) {
-	return `${value}`;
-}
-
 const colorOptions = [
 	{ label: 'Red', value: 'Red' },
 	{ label: 'Green', value: 'Green' },
@@ -63,6 +59,7 @@ const Shop = () => {
 	const [sub, setSub] = useState([]);
 	const [color, setColor] = useState([]);
 	// const { isLoading, isError, products } = filteredProducts;
+	const [priceRange, setPriceRange] = React.useState([1000, 9000]);
 
 	useEffect(() => {
 		dispatch(
@@ -72,16 +69,19 @@ const Shop = () => {
 				main,
 				sub,
 				color,
+				priceRange,
 			})
 		);
 		dispatch(setCurrentPage(page));
 		window.scrollTo(0, 0);
-	}, [dispatch, page, main, sub, color]);
-
-	const [value, setValue] = React.useState([1000, 5000]);
+	}, [dispatch, page, main, sub, color, priceRange]);
 
 	const handlePriceChange = (event, newValue) => {
-		setValue(newValue);
+		setPriceRange(newValue);
+	};
+
+	const valuetext = (value) => {
+		return `$${value}`;
 	};
 
 	const handlePageChange = (event, value) => {
@@ -148,7 +148,7 @@ const Shop = () => {
 							<Box sx={{ width: 200 }}>
 								<Slider
 									getAriaLabel={() => 'Price Range'}
-									value={value}
+									value={priceRange}
 									onChange={handlePriceChange}
 									valueLabelDisplay="auto"
 									getAriaValueText={valuetext}
@@ -156,6 +156,9 @@ const Shop = () => {
 									max={9000}
 									step={100}
 								/>
+								<div>
+									${priceRange[0]} - ${priceRange[1]}
+								</div>
 							</Box>
 						</ThemeProvider>
 					</div>
@@ -175,14 +178,14 @@ const Shop = () => {
 							))}
 						</Checkbox.Group>
 					</div>
-					<div className="colors">
+					{/* <div className="colors">
 						<h3>Sort Products:</h3>
-						{/* <select name="sort" id="" onChange={(e) => setSort(e.target.value)}>
+						<select name="sort" id="" onChange={(e) => setSort(e.target.value)}>
 							<option defaultValue="newest">Newest</option>
 							<option value="asc">Price (asc)</option>
 							<option value="desc">Price (desc)</option>
-						</select> */}
-					</div>
+						</select>
+					</div> */}
 				</div>
 				<div className="products">
 					<div className="product_cards">
@@ -190,15 +193,17 @@ const Shop = () => {
 							<ProductCard product={product} key={product._id} />
 						))}
 					</div>
-					<ThemeProvider theme={theme}>
-						<Pagination
-							count={10}
-							page={page}
-							onChange={handlePageChange}
-							shape="rounded"
-							color="primary"
-						/>
-					</ThemeProvider>
+					<div className="pagination">
+						<ThemeProvider theme={theme}>
+							<Pagination
+								count={10}
+								page={page}
+								onChange={handlePageChange}
+								shape="rounded"
+								color="primary"
+							/>
+						</ThemeProvider>
+					</div>
 				</div>
 			</div>
 		</div>

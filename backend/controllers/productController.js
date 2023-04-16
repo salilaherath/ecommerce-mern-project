@@ -74,6 +74,7 @@ const getProductsByCategory = async (req, res) => {
 		limit = 9,
 		search = '',
 		sort = 'newest',
+		priceRange,
 	} = req.query;
 
 	const categoryFilter = {};
@@ -94,6 +95,12 @@ const getProductsByCategory = async (req, res) => {
 		searchFilter.name = { $regex: search, $options: 'i' };
 	}
 
+	const priceFilter = {};
+	if (priceRange) {
+		const [minPrice, maxPrice] = priceRange.split(',');
+		priceFilter.price = { $gte: minPrice, $lte: maxPrice };
+	}
+
 	try {
 		const count = await Product.countDocuments({
 			$and: [
@@ -104,6 +111,7 @@ const getProductsByCategory = async (req, res) => {
 					},
 				},
 				searchFilter,
+				priceFilter,
 			],
 		});
 
@@ -125,6 +133,7 @@ const getProductsByCategory = async (req, res) => {
 					},
 				},
 				searchFilter,
+				priceFilter,
 			],
 		})
 			.select('name image price rating')
