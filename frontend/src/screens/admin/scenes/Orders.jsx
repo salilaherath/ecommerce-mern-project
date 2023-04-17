@@ -94,6 +94,14 @@ const Orders = () => {
 			flex: 1,
 		},
 		{
+			field: 'completed',
+			headerName: 'Complete Status',
+			flex: 0.5,
+			renderCell: (params) => (
+				<div>{params.row.isDelivered ? 'Completed' : 'Not Completed'}</div>
+			),
+		},
+		{
 			field: 'actions',
 			headerName: 'Actions',
 			renderCell: (params) => {
