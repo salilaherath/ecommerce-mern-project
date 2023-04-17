@@ -12,8 +12,10 @@ import {
 	setUserInfoMail,
 } from '../../features/users/userLogInDataSlice';
 import { Select } from 'antd';
+import axios from 'axios';
 
 const ProfileScreen = () => {
+	const [orders, setOrders] = useState([]);
 	const { userInfo } = useSelector((state) => state.userLogInDetails);
 	const { profileInfo, isError, message, updateIsSuccess } = useSelector(
 		(state) => state.profileDetails
@@ -54,6 +56,8 @@ const ProfileScreen = () => {
 			} else {
 				setName(profileInfo.name);
 				setEmail(profileInfo.email);
+				setPassword('');
+				setConfirmPassword('');
 			}
 		}
 	}, [
@@ -69,6 +73,17 @@ const ProfileScreen = () => {
 		name,
 	]);
 
+	useEffect(() => {
+		axios
+			.get('/api/orders/myorders', {
+				headers: {
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			})
+			.then((response) => setOrders(response.data))
+			.catch((error) => console.error(error));
+	}, []);
+
 	console.log(passwordMessage);
 
 	const submitHandler = (e) => {
@@ -81,6 +96,10 @@ const ProfileScreen = () => {
 				updateProfile({ name, email, password, token: userInfo['token'] })
 			);
 		}
+	};
+
+	const navigateOrder = (orderId) => {
+		navigate(`/orders/${orderId}`);
 	};
 
 	return (
@@ -96,8 +115,8 @@ const ProfileScreen = () => {
 							id="name"
 							name="name"
 							type="text"
-							onChange={(e) => setName(e.target.value)}
 							value={name}
+							onChange={(e) => setName(e.target.value)}
 						/>
 						<br />
 						<br />
@@ -108,8 +127,8 @@ const ProfileScreen = () => {
 							id="email"
 							name="email"
 							type="email"
-							onChange={(e) => setEmail(e.target.value)}
 							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<br />
 						<br />
@@ -120,8 +139,8 @@ const ProfileScreen = () => {
 							id="password"
 							name="password"
 							type="password"
-							onChange={(e) => setPassword(e.target.value)}
 							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<br />
 						<br />
@@ -132,81 +151,48 @@ const ProfileScreen = () => {
 							id="confirmPassword"
 							name="confirmPassword"
 							type="password"
-							onChange={(e) => setConfirmPassword(e.target.value)}
 							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
 						/>
 						<br />
+						{passwordMessage && <span>{passwordMessage}</span>}
 						<button type="submit">UPDATE</button>
 					</form>
 				</div>
 				<div className="right">
 					<h3>MY ORDERS</h3>
-					<div className="card">
-						<div>
-							<h4>Order Number: #00896854</h4>
-							<h4>Order Items:</h4>
-							<p>Blue Tshirt x 2</p>
-							<p>Red Tshirt x 1</p>
+					{orders.map((order) => (
+						<div key={order._id} className="card">
+							<div>
+								<h4
+									className="order-num"
+									onClick={() => navigateOrder(order._id)}
+								>
+									Order Number: #{order._id}
+								</h4>
+								<h4>Order Items:</h4>
+								{order.orderItems.map((item) => (
+									<p key={item._id}>
+										{item.name} x {item.qty}
+									</p>
+								))}
+							</div>
+							<div className="rightSection">
+								<h4>Order Total: Rs. {order.totalPrice.toFixed(2)}</h4>
+								<h4>Ordered Date: {order.createdAt.substr(0, 10)}</h4>
+								<h4>Order Status:</h4>
+								<Select
+									defaultValue="Ordered"
+									style={{ width: 120 }}
+									// onChange={handleChange}
+									options={[
+										{ value: 'ordered', label: 'Ordered' },
+										{ value: 'received', label: 'Received' },
+									]}
+								/>
+							</div>
 						</div>
-						<div className="rightSection">
-							<h4>Order Total: Rs. 4500.00</h4>
-							<h4>Ordered Date: 28/02/2023</h4>
-							<h4>Order Status:</h4>
-							<Select
-								defaultValue="Ordered"
-								style={{ width: 120 }}
-								// onChange={handleChange}
-								options={[
-									{ value: 'ordered', label: 'Ordered' },
-									{ value: 'received', label: 'Recevied' },
-								]}
-							/>
-						</div>
-					</div>
-					<div className="card">
-						<div>
-							<h4>Order Number: #00896854</h4>
-							<h4>Order Items:</h4>
-							<p>Blue Tshirt x 2</p>
-							<p>Red Tshirt x 1</p>
-						</div>
-						<div className="rightSection">
-							<h4>Order Total: Rs. 4500.00</h4>
-							<h4>Ordered Date: 28/02/2023</h4>
-							<h4>Order Status:</h4>
-							<Select
-								defaultValue="Ordered"
-								style={{ width: 120 }}
-								// onChange={handleChange}
-								options={[
-									{ value: 'ordered', label: 'Ordered' },
-									{ value: 'received', label: 'Recevied' },
-								]}
-							/>
-						</div>
-					</div>
-					<div className="card">
-						<div>
-							<h4>Order Number: #00896854</h4>
-							<h4>Order Items:</h4>
-							<p>Blue Tshirt x 2</p>
-							<p>Red Tshirt x 1</p>
-						</div>
-						<div className="rightSection">
-							<h4>Order Total: Rs. 4500.00</h4>
-							<h4>Ordered Date: 28/02/2023</h4>
-							<h4>Order Status:</h4>
-							<Select
-								defaultValue="Ordered"
-								style={{ width: 120 }}
-								// onChange={handleChange}
-								options={[
-									{ value: 'ordered', label: 'Ordered' },
-									{ value: 'received', label: 'Recevied' },
-								]}
-							/>
-						</div>
-					</div>
+					))}
 				</div>
 			</div>
 		</div>

@@ -10,11 +10,10 @@ import axios from 'axios';
 const Users = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-
-	const onChange = (checked) => {
-		console.log(`switch to ${checked}`);
-	};
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const [selectionModel, setSelectionModel] = useState([]);
 	const [users, setUsers] = useState([]);
+
 	useEffect(() => {
 		getUsers();
 	}, []);
@@ -25,15 +24,29 @@ const Users = () => {
 		});
 	};
 
-	const handleMakeAdmin = (event, userId) => {
+	const handleMakeAdmin = (checked, userId) => {
 		const updatedUsers = [...users];
 		const userIndex = updatedUsers.findIndex((user) => user._id === userId);
-		updatedUsers[userIndex].isAdmin = event.target.checked;
+		updatedUsers[userIndex].isAdmin = checked;
 
 		axios
-			.put(`/api/users/${userId}`, { isAdmin: event.target.checked })
+			.put(
+				`/api/users/${userId}/makeAdmin`,
+				{ isAdmin: checked },
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${userInfo.token}`,
+					},
+				}
+			)
 			.then((response) => {
-				setUsers(response.data);
+				const updatedUser = response.data;
+				const updatedUserIndex = updatedUsers.findIndex(
+					(user) => user._id === updatedUser._id
+				);
+				updatedUsers[updatedUserIndex] = updatedUser;
+				setUsers(updatedUsers);
 			})
 			.catch((error) => {
 				console.error(error);
@@ -48,17 +61,6 @@ const Users = () => {
 			flex: 1,
 			cellClassName: 'name-column--cell',
 		},
-		// {
-		// 	field: 'address',
-		// 	headerName: 'Address',
-		// 	headerAlign: 'left',
-		// 	align: 'left',
-		// },
-		// {
-		// 	field: 'phone',
-		// 	headerName: 'Contact No.',
-		// 	flex: 1,
-		// },
 		{
 			field: 'email',
 			headerName: 'Email',
@@ -69,16 +71,13 @@ const Users = () => {
 			headerName: 'Make Admin',
 			renderCell: (params) => (
 				<Switch
-					checked={params.row.isAdmin}
-					onChange={(event) => handleMakeAdmin(event, params.row._id)}
+					defaultChecked={params.row.isAdmin}
+					onChange={(checked) => handleMakeAdmin(checked, params.row._id)}
 				/>
 			),
 			flex: 1,
 		},
 	];
-	// const addCustomers=(customerdata)=>{
-	// 	userService.addCustomers(c)
-	// }
 
 	return (
 		<Box m="20px">
@@ -117,6 +116,10 @@ const Users = () => {
 					getRowId={(row) => row._id}
 					rows={users || []}
 					columns={columns}
+					onSelectionModelChange={(newSelectionModel) => {
+						setSelectionModel(newSelectionModel);
+					}}
+					selectionModel={selectionModel}
 				/>
 			</Box>
 		</Box>
