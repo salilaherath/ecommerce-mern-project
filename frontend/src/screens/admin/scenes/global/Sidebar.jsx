@@ -12,6 +12,7 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import admin from './Admin.png';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 	const theme = useTheme();
@@ -107,7 +108,7 @@ const Sidebar = () => {
 									alt="profile-user"
 									width="100px"
 									height="100px"
-									src={`../images/Admin.png`}
+									src={admin}
 									style={{ cursor: 'pointer', borderRadius: '50%' }}
 								/>
 							</Box>

@@ -46,7 +46,7 @@ const DashboardLayout = () => {
 										<Route index element={<Overview />} />
 										<Route path="products" element={<Products />} />
 										<Route path="addProducts" element={<AddProducts />} />
-										<Route path="editProducts" element={<EditProducts />} />
+										<Route path="editProducts/:id" element={<EditProducts />} />
 										<Route path="users" element={<Users />} />
 										<Route path="orders" element={<Orders />} />
 										<Route path="charts" element={<Charts />} />

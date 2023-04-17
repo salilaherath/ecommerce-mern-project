@@ -33,8 +33,8 @@ const Products = () => {
 		navigate('/dashboard/addProducts');
 	};
 
-	const navigateToEdit = () => {
-		navigate('/dashboard/editProducts');
+	const navigateToEdit = (id) => {
+		navigate(`/dashboard/editProducts/${id}`);
 	};
 
 	const deleteItem = (id) => {
@@ -126,6 +126,7 @@ const Products = () => {
 			flex: 1,
 			headerAlign: 'center',
 			renderCell: (cellValues) => {
+				const id = cellValues.row._id;
 				return (
 					<>
 						<Popconfirm
@@ -140,7 +141,10 @@ const Products = () => {
 								<DeleteIcon />
 							</Button>
 						</Popconfirm>
-						<Button sx={{ color: colors.grey[100] }} onClick={navigateToEdit}>
+						<Button
+							sx={{ color: colors.grey[100] }}
+							onClick={() => navigateToEdit(id)}
+						>
 							<EditIcon />
 						</Button>
 					</>

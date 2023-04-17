@@ -157,7 +157,7 @@ const Shop = () => {
 									step={100}
 								/>
 								<div>
-									${priceRange[0]} - ${priceRange[1]}
+									Rs.{priceRange[0]} - Rs.{priceRange[1]}
 								</div>
 							</Box>
 						</ThemeProvider>

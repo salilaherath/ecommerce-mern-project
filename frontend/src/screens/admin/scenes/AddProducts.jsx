@@ -326,18 +326,6 @@ const AddProducts = () => {
 																))}
 															</optgroup>
 														</Select>
-														{/* <TextField
-															variant="filled"
-															type="text"
-															label="Size"
-															onBlur={handleBlur}
-															onChange={handleChange}
-															value={values.size}
-															name={`variation[${index}].size`}
-															error={!!touched.size && !!errors.size}
-															helperText={touched.size && errors.size}
-															autoComplete="off"
-														/> */}
 														<TextField
 															variant="filled"
 															type="text"
