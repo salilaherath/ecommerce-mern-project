@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './header.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -6,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 const Header = () => {
 	const cart = useSelector((state) => state.cart);
+	const [keyword, setKeyword] = useState('');
 	const { cartItems } = cart;
 
 	const navigate = useNavigate();
@@ -13,6 +15,15 @@ const Header = () => {
 	const navigateToCart = () => {
 		navigate('/cart');
 	};
+
+	const searchHandler = () => {
+		if (keyword.trim()) {
+			navigate(`/shop?search=${keyword}`);
+		} else {
+			navigate('/shop');
+		}
+	};
+
 	return (
 		<div className="full_header">
 			<div className="header">
@@ -38,8 +49,12 @@ const Header = () => {
 						</Link>
 					</ul>
 					<div className="search">
-						<input type="text" placeholder="Search" />
-						<span>
+						<input
+							type="text"
+							placeholder="Search"
+							onChange={(e) => setKeyword(e.target.value)}
+						/>
+						<span onClick={searchHandler}>
 							<SearchOutlinedIcon />
 						</span>
 					</div>

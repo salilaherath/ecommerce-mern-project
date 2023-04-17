@@ -43,9 +43,33 @@ const getLatestOrders = async () => {
 	return response.data;
 };
 
+// Update order status
+const updateOrderStatus = async (id, orderStatus) => {
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+
+	try {
+		const response = await axios.put(
+			`/api/orders/${id}/status`,
+			{ orderStatus },
+			config
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Error updating order status');
+	}
+};
+
 const orderService = {
 	getOrders,
 	getLatestOrders,
+	updateOrderStatus,
 };
 
 export default orderService;

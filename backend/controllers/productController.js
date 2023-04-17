@@ -188,25 +188,6 @@ const getProductsById = asyncHandler(async (req, res) => {
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
-// const updateProduct = asyncHandler(async (req, res) => {
-// 	try {
-// 		const { id } = req.params;
-// 		const product = await Product.findByIdAndUpdate(id, req.body);
-// 		if (product) {
-// 			const updatedProduct = await Product.findById(id);
-// 			res.json(updatedProduct);
-// 		} else {
-// 			res.status(404);
-// 			throw new Error('Product not found');
-// 		}
-// 	} catch (error) {
-// 		throw new Error(error);
-// 	}
-// });
-
-// @desc    Update a product
-// @route   PUT /api/products/:id
-// @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
 	const product = await Product.findOne({ _id: req.params.id });
 	if (req.file) {

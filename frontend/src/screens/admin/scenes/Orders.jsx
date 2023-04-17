@@ -13,6 +13,7 @@ const Orders = () => {
 	const colors = tokens(theme.palette.mode);
 	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
+	const [orderStatus, setOrderStatus] = useState(orders.orderStatus);
 
 	const transformOrderData = (orders) => {
 		return orders.map((order) => {
@@ -36,21 +37,18 @@ const Orders = () => {
 		});
 	}, []);
 
-	const handleChange = (e, params) => {
-		const updatedStatus = e.target.value;
+	const handleStatusChange = async (value, params) => {
+		const updatedStatus = value;
+		console.log(updatedStatus);
 		const orderId = params.id;
 
-		// 	// Make a request to update the order status
-		// 	axios
-		// 		.put(`/api/orders/${orderId}/status`, { status: updatedStatus })
-		// 		.then((res) => {
-		// 			console.log('Order status updated successfully!');
-		// 			// You can also update the UI to show the updated status
-		// 		})
-		// 		.catch((err) => {
-		// 			console.error('Error updating order status:', err);
-		// 			// You can show an error message to the user
-		// 		});
+		try {
+			const response = await orderService.updateOrderStatus(orderId, value);
+			setOrderStatus(response.orderStatus);
+		} catch (error) {
+			console.error(error);
+			// handle error
+		}
 	};
 
 	const columns = [
@@ -83,9 +81,9 @@ const Orders = () => {
 			headerName: 'Order Status',
 			renderCell: (params) => (
 				<Select
-					defaultValue={orders.orderStatus}
+					defaultValue={params.value}
 					style={{ width: 120 }}
-					onChange={(e) => handleChange(e, params)}
+					onChange={(value) => handleStatusChange(value, params)}
 					options={[
 						{ value: 'ordered', label: 'Ordered' },
 						{ value: 'packed', label: 'Packed' },

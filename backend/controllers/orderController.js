@@ -96,7 +96,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update order status
-// @route   POST /api/orders/:id/status
+// @route   PUT /api/orders/:id/status
 // @access  Private Admin
 const updateOrderStatus = asyncHandler(async (req, res) => {
 	try {

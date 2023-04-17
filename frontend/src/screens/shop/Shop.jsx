@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import './shop.scss';
 import ProductCard from '../../components/productCard/ProductCard';
 import Box from '@mui/material/Box';
@@ -58,6 +59,8 @@ const Shop = () => {
 	const currentPage = useSelector(
 		(state) => state.filteredProducts.currentPage
 	);
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
 	const totalPages = useSelector((state) => state.filteredProducts.totalPages);
 	const [page, setPage] = useState(1);
 	const [main, setMain] = useState([]);
@@ -65,6 +68,8 @@ const Shop = () => {
 	const [color, setColor] = useState([]);
 	// const { isLoading, isError, products } = filteredProducts;
 	const [priceRange, setPriceRange] = React.useState([1000, 9000]);
+
+	const keyword = queryParams.get('search') || '';
 
 	useEffect(() => {
 		dispatch(
@@ -75,11 +80,12 @@ const Shop = () => {
 				sub,
 				color,
 				priceRange,
+				search: keyword,
 			})
 		);
 		dispatch(setCurrentPage(page));
 		window.scrollTo(0, 0);
-	}, [dispatch, page, main, sub, color, priceRange]);
+	}, [dispatch, page, main, sub, color, priceRange, keyword]);
 
 	const handlePriceChange = (event, newValue) => {
 		setPriceRange(newValue);

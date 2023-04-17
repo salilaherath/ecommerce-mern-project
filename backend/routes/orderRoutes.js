@@ -18,8 +18,8 @@ router
 	.get(protect, isAdmin, getAllOrders);
 router.route('/latest').get(protect, isAdmin, getLatestOrders);
 router.route('/myorders').get(protect, getMyOrders);
-router.route('/:id').get(protect, getOrderByID);
-router.route('/:id/deliver').put(protect, updateOrderToDelivered);
 router.route('/:id/status').put(protect, isAdmin, updateOrderStatus);
+router.route('/:id/deliver').put(protect, updateOrderToDelivered);
+router.route('/:id').get(protect, getOrderByID);
 
 export default router;
