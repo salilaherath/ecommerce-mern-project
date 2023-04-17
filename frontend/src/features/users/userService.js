@@ -33,6 +33,7 @@ const updateProfile = async ({ name, email, password }, config) => {
 		{ name, email, password },
 		config
 	);
+	console.log({ name, email, password });
 	return response.data;
 };
 

@@ -11,12 +11,12 @@ import {
 	setUserInfoName,
 	setUserInfoMail,
 } from '../../features/users/userLogInDataSlice';
-import { Select } from 'antd';
+import { Button, Select } from 'antd';
 import axios from 'axios';
 
 const ProfileScreen = () => {
 	const [orders, setOrders] = useState([]);
-	const { userInfo } = useSelector((state) => state.userLogInDetails);
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 	const { profileInfo, isError, message, updateIsSuccess } = useSelector(
 		(state) => state.profileDetails
 	);
@@ -67,10 +67,8 @@ const ProfileScreen = () => {
 		userInfo,
 		updateIsSuccess,
 		isError,
-		email,
 		message,
 		passwordMessage,
-		name,
 	]);
 
 	useEffect(() => {
@@ -83,7 +81,9 @@ const ProfileScreen = () => {
 			.then((response) => setOrders(response.data))
 			.catch((error) => console.error(error));
 	}, []);
-
+	// useEffect(() => {
+	// 	console.log(name);
+	// }, [name]);
 	console.log(passwordMessage);
 
 	const submitHandler = (e) => {
@@ -92,6 +92,7 @@ const ProfileScreen = () => {
 			setPasswordMessage('Passwords do not match');
 		} else {
 			setPasswordMessage('');
+			console.log(name);
 			dispatch(
 				updateProfile({ name, email, password, token: userInfo['token'] })
 			);
@@ -100,6 +101,23 @@ const ProfileScreen = () => {
 
 	const navigateOrder = (orderId) => {
 		navigate(`/orders/${orderId}`);
+	};
+
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+
+	const handleCompleteOrder = async (orderId) => {
+		try {
+			const { data } = await axios.put(
+				`/api/orders/${orderId}/deliver`,
+				{},
+				config
+			);
+		} catch (error) {}
 	};
 
 	return (
@@ -115,8 +133,10 @@ const ProfileScreen = () => {
 							id="name"
 							name="name"
 							type="text"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
+							defaultValue={name}
+							onChange={(e) => {
+								setName(e.target.value);
+							}}
 						/>
 						<br />
 						<br />
@@ -127,7 +147,7 @@ const ProfileScreen = () => {
 							id="email"
 							name="email"
 							type="email"
-							value={email}
+							defaultValue={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<br />
@@ -139,7 +159,7 @@ const ProfileScreen = () => {
 							id="password"
 							name="password"
 							type="password"
-							value={password}
+							defaultValue={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<br />
@@ -151,7 +171,7 @@ const ProfileScreen = () => {
 							id="confirmPassword"
 							name="confirmPassword"
 							type="password"
-							value={confirmPassword}
+							defaultValue={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}
 						/>
 						<br />
@@ -161,27 +181,42 @@ const ProfileScreen = () => {
 				</div>
 				<div className="right">
 					<h3>MY ORDERS</h3>
-					{orders.map((order) => (
-						<div key={order._id} className="card">
-							<div>
-								<h4
-									className="order-num"
-									onClick={() => navigateOrder(order._id)}
-								>
-									Order Number: #{order._id}
-								</h4>
-								<h4>Order Items:</h4>
-								{order.orderItems.map((item) => (
-									<p key={item._id}>
-										{item.name} x {item.qty}
-									</p>
-								))}
-							</div>
-							<div className="rightSection">
-								<h4>Order Total: Rs. {order.totalPrice.toFixed(2)}</h4>
-								<h4>Ordered Date: {order.createdAt.substr(0, 10)}</h4>
-								<h4>Order Status:</h4>
-								<Select
+					{orders
+						.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+						.map((order) => (
+							<div key={order._id} className="card">
+								<div>
+									<h4
+										className="order-num"
+										onClick={() => navigateOrder(order._id)}
+									>
+										Order Number: #{order._id}
+									</h4>
+									<h4>Order Items:</h4>
+									{order.orderItems.map((item) => (
+										<p key={item._id}>
+											{item.name} x {item.qty}
+										</p>
+									))}
+								</div>
+								<div className="rightSection">
+									<h4>Order Total: Rs. {order.totalPrice.toFixed(2)}</h4>
+									<h4>Ordered Date: {order.createdAt.substr(0, 10)}</h4>
+									<h4>
+										Order Status:{' '}
+										{order.orderStatus.charAt(0).toUpperCase() +
+											order.orderStatus.slice(1)}
+									</h4>
+									<Button
+										type="primary"
+										disabled={
+											order.isDelivered || order.orderStatus !== 'shipped'
+										}
+										onClick={() => handleCompleteOrder(order._id)}
+									>
+										{order.isDelivered ? 'Completed' : 'Complete'}
+									</Button>
+									{/* <Select
 									defaultValue="Ordered"
 									style={{ width: 120 }}
 									// onChange={handleChange}
@@ -189,10 +224,10 @@ const ProfileScreen = () => {
 										{ value: 'ordered', label: 'Ordered' },
 										{ value: 'received', label: 'Received' },
 									]}
-								/>
+								/> */}
+								</div>
 							</div>
-						</div>
-					))}
+						))}
 				</div>
 			</div>
 		</div>

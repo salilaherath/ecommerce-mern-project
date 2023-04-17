@@ -88,7 +88,6 @@ const Orders = () => {
 						{ value: 'ordered', label: 'Ordered' },
 						{ value: 'packed', label: 'Packed' },
 						{ value: 'shipped', label: 'Shipped' },
-						{ value: 'delivered', label: 'Delivered' },
 					]}
 				/>
 			),

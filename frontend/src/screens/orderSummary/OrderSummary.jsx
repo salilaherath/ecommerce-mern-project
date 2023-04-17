@@ -70,6 +70,10 @@ const OrderSummary = () => {
 						{new Date(order.createdAt).toLocaleDateString()}
 					</p>
 					<h3>Order Status</h3>
+					<p>
+						{order.orderStatus.charAt(0).toUpperCase() +
+							order.orderStatus.slice(1)}
+					</p>
 				</div>
 				<div className="orderItems">
 					<h3>Order Items</h3>
