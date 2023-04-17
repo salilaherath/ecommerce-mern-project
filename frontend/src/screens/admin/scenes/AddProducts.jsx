@@ -8,9 +8,11 @@ import Header from '../components/Header';
 import productService from '../../../features/products/productService';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
 
 const AddProducts = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
+	const navigate = useNavigate();
 
 	const colors = [
 		'Red',
@@ -34,6 +36,7 @@ const AddProducts = () => {
 	const handleFormSubmit = async (values) => {
 		console.log(values);
 		await productService.addProducts(values).then(() => {});
+		navigate('/dashboard/products');
 	};
 
 	const [categories, setCategories] = useState([]);

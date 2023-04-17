@@ -10,11 +10,13 @@ import Header from '../components/Header';
 import productService from '../../../features/products/productService';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
 
 const EditProducts = () => {
 	const isNonMobile = useMediaQuery('(min-width:600px)');
 	const { id } = useParams();
 	const { userInfo } = useSelector((state) => state.userLogInDetails);
+	const navigate = useNavigate();
 
 	const colors = [
 		'Red',
@@ -108,7 +110,9 @@ const EditProducts = () => {
 				},
 			});
 
-			return response.data;
+			if (response.data) {
+				navigate('/dashboard/products');
+			}
 		} catch (error) {
 			console.error(error);
 		}

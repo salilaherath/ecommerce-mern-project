@@ -158,7 +158,7 @@ const Shop = () => {
 									valueLabelDisplay="auto"
 									getAriaValueText={valuetext}
 									min={1000}
-									max={9000}
+									max={9999}
 									step={100}
 								/>
 								<div>
