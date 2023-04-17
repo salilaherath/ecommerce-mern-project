@@ -28,10 +28,15 @@ const colorOptions = [
 	{ label: 'Red', value: 'Red' },
 	{ label: 'Green', value: 'Green' },
 	{ label: 'Blue', value: 'Blue' },
-	{ label: 'Orange', value: 'Orange' },
-	{ label: 'Yellow', value: 'Yellow' },
-	{ label: 'Black', value: 'Black' },
 	{ label: 'White', value: 'White' },
+	{ label: 'Black', value: 'Black' },
+	{ label: 'Brown', value: 'Brown' },
+	{ label: 'Yellow', value: 'Yellow' },
+	{ label: 'Purple', value: 'Purple' },
+	{ label: 'Gray', value: 'Gray' },
+	{ label: 'Maroon', value: 'Maroon' },
+	{ label: 'Pink', value: 'Pink' },
+	{ label: 'Orange', value: 'Orange' },
 ];
 
 const mainOptions = [

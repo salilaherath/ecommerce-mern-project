@@ -203,44 +203,71 @@ const getProductsById = asyncHandler(async (req, res) => {
 // 		throw new Error(error);
 // 	}
 // });
+
+// @desc    Update a product
+// @route   PUT /api/products/:id
+// @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-	try {
-		const { id } = req.params;
-		const product = await Product.findById(id);
-
-		if (product) {
-			const Key = `${id}-image${path.extname(req.file.originalname)}`;
-			const uploadParams = {
-				Key: Key,
-				Bucket: 'vintage-clothing-product-images',
-				Body: req.file.buffer,
-			};
-			s3.putObject(uploadParams, async (err, data) => {
-				if (err) {
-					res.status(400);
-					throw new Error(
-						`Failed to upload file to Server, please retry` + err
-					);
-				}
-				if (data) {
-					const imageUrl = `https://vintage-clothing-product-images.s3.ap-south-1.amazonaws.com/${Key}`;
-
-					product.name = req.body.name || product.name;
-					product.description = req.body.description || product.description;
-					product.price = req.body.price || product.price;
-					product.countInStock = req.body.countInStock || product.countInStock;
-					product.image = imageUrl || product.image;
-
-					const updatedProduct = await product.save();
-					res.json(updatedProduct);
-				}
-			});
-		} else {
-			res.status(404);
-			throw new Error('Product not found');
-		}
-	} catch (error) {
-		throw new Error(error);
+	const product = await Product.findOne({ _id: req.params.id });
+	if (req.file) {
+		const deleteParams = {
+			Key: product.image.split('amazonaws.com/')[1],
+			Bucket: 'vintage-clothing-product-images',
+		};
+		s3.deleteObject(deleteParams, (err, data) => {
+			if (err) {
+				throw new Error('Failed to delete Image');
+			}
+			if (data) {
+				const Key = `${product._id}-image${path.extname(
+					req.file.originalname
+				)}`;
+				const uploadParams = {
+					Key: Key,
+					Bucket: 'vintage-clothing-product-images',
+					Body: req.file.buffer,
+				};
+				s3.putObject(uploadParams, async (err, data) => {
+					if (err) {
+						res.status(400);
+						throw new Error(
+							`Failed to upload file to Server, please retry` + err
+						);
+					}
+					if (data) {
+						await Product.findOneAndUpdate(
+							{ _id: req.params.id },
+							{
+								...req.body,
+								image: `https://vintage-clothing-product-images.s3.ap-south-1.amazonaws.com/${Key}`,
+							}
+						).then(
+							(data) => {
+								res.json('Product Successfully Updated' + data);
+							},
+							(error) => {
+								throw new Error('Product update failed' + error);
+							}
+						);
+					}
+				});
+			}
+		});
+	} else {
+		await Product.findOneAndUpdate(
+			{ _id: req.params.id },
+			{
+				...req.body,
+				image: product.image,
+			}
+		).then(
+			(data) => {
+				res.json('Product Successfully Updated' + data);
+			},
+			(error) => {
+				throw new Error('Product update failed' + error);
+			}
+		);
 	}
 });
 

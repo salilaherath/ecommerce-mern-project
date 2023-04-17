@@ -24,6 +24,7 @@ const AddProducts = () => {
 		'Gray',
 		'Maroon',
 		'Pink',
+		'Orange',
 	];
 
 	const sizeGroup1 = ['S', 'M', 'L', 'XL', '2XL'];

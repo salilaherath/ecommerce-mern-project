@@ -108,8 +108,7 @@ const EditProducts = () => {
 				},
 			});
 
-			const updatedProduct = response.data;
-			console.log(updatedProduct); // do something with the updated product
+			return response.data;
 		} catch (error) {
 			console.error(error);
 		}

@@ -1,5 +1,6 @@
 import { Box, useTheme } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { useNavigate } from 'react-router-dom';
 import { tokens } from '../theme';
 import Header from '../components/Header';
 import { Select, Button } from 'antd';
@@ -10,7 +11,7 @@ import orderService from '../../../features/orders/orderService';
 const Orders = () => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-
+	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 
 	const transformOrderData = (orders) => {
@@ -24,28 +25,33 @@ const Orders = () => {
 		});
 	};
 
+	const orderDetails = (id) => {
+		const url = `/orders/${id}`;
+		window.open(url, '_blank');
+	};
+
 	useEffect(() => {
 		orderService.getOrders().then((data) => {
 			setOrders(transformOrderData(data.orders));
 		});
 	}, []);
 
-	// const handleChange = (e, params) => {
-	// 	const updatedStatus = e.target.value;
-	// 	const orderId = params.id;
+	const handleChange = (e, params) => {
+		const updatedStatus = e.target.value;
+		const orderId = params.id;
 
-	// 	// Make a request to update the order status
-	// 	axios
-	// 		.put(`/api/orders/${orderId}/status`, { status: updatedStatus })
-	// 		.then((res) => {
-	// 			console.log('Order status updated successfully!');
-	// 			// You can also update the UI to show the updated status
-	// 		})
-	// 		.catch((err) => {
-	// 			console.error('Error updating order status:', err);
-	// 			// You can show an error message to the user
-	// 		});
-	// };
+		// 	// Make a request to update the order status
+		// 	axios
+		// 		.put(`/api/orders/${orderId}/status`, { status: updatedStatus })
+		// 		.then((res) => {
+		// 			console.log('Order status updated successfully!');
+		// 			// You can also update the UI to show the updated status
+		// 		})
+		// 		.catch((err) => {
+		// 			console.error('Error updating order status:', err);
+		// 			// You can show an error message to the user
+		// 		});
+	};
 
 	const columns = [
 		{ field: '_id', headerName: 'ID', flex: 0.6 },
@@ -75,27 +81,35 @@ const Orders = () => {
 		{
 			field: 'orderStatus',
 			headerName: 'Order Status',
-			// renderCell: (params) => (
-			// 	<Select
-			// 		defaultValue={orders.orderStatus}
-			// 		style={{ width: 120 }}
-			// 		onChange={(e) => handleChange(e, params)}
-			// 		options={[
-			// 			{ value: 'ordered', label: 'Ordered' },
-			// 			{ value: 'packed', label: 'Packed' },
-			// 			{ value: 'shipped', label: 'Shipped' },
-			// 			{ value: 'delivered', label: 'Delivered' },
-			// 		]}
-			// 	/>
-			// ),
+			renderCell: (params) => (
+				<Select
+					defaultValue={orders.orderStatus}
+					style={{ width: 120 }}
+					onChange={(e) => handleChange(e, params)}
+					options={[
+						{ value: 'ordered', label: 'Ordered' },
+						{ value: 'packed', label: 'Packed' },
+						{ value: 'shipped', label: 'Shipped' },
+						{ value: 'delivered', label: 'Delivered' },
+					]}
+				/>
+			),
 			flex: 1,
 		},
 		{
 			field: 'actions',
 			headerName: 'Actions',
-			renderCell: (params) => (
-				<Button type="primary" icon={<CopyOutlined />} size="middle" />
-			),
+			renderCell: (params) => {
+				const id = params.row._id;
+				return (
+					<Button
+						type="primary"
+						icon={<CopyOutlined />}
+						size="middle"
+						onClick={() => orderDetails(id)}
+					/>
+				);
+			},
 			flex: 1,
 		},
 	];
