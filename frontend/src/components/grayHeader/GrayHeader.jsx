@@ -7,6 +7,7 @@ import './grayHeader.scss';
 
 const GrayHeader = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const userLogInDetails = useSelector((state) => state.userLogInDetails);
 	const { userInfo } = userLogInDetails;
@@ -14,9 +15,8 @@ const GrayHeader = () => {
 	const logoutHandler = () => {
 		dispatch(logout());
 		dispatch(resetWithProfile());
+		navigate('/');
 	};
-
-	const navigate = useNavigate();
 
 	const navigateToProfile = () => {
 		navigate('/users/profile');

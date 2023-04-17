@@ -9,6 +9,7 @@ import {
 	getProductsById,
 	getTotalProducts,
 	updateProduct,
+	getProductsByCategory,
 } from '../controllers/productController.js';
 import { protect, isAdmin } from '../middleware/authMiddleware.js';
 
@@ -26,6 +27,7 @@ const uploadImage = multer({
 router.route('/').get(getProducts);
 router.route('/latest').get(getLatestProducts);
 router.route('/total').get(getTotalProducts);
+router.route('/productsByFilters').get(getProductsByCategory);
 router
 	.route('/:id')
 	.get(getProductsById)

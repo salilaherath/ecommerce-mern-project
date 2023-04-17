@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './shop.scss';
 import ProductCard from '../../components/productCard/ProductCard';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { listProducts } from '../../features/products/productListDataSlice';
 import { CircularProgress } from '@mui/material';
+import Pagination from '@mui/material/Pagination';
 import { Checkbox } from 'antd';
+import {
+	fetchFilteredProducts,
+	setCurrentPage,
+} from '../../features/products/productsByFiltersDataSlice';
 
 const theme = createTheme({
 	palette: {
@@ -21,61 +24,86 @@ const theme = createTheme({
 	},
 });
 
-function valuetext(value) {
-	return `${value}`;
-}
-
-const CheckboxGroup = Checkbox.Group;
-const plainOptions = [
-	'Red',
-	'Green',
-	'Blue',
-	'Orange',
-	'Yellow',
-	'Black',
-	'White',
+const colorOptions = [
+	{ label: 'Red', value: 'Red' },
+	{ label: 'Green', value: 'Green' },
+	{ label: 'Blue', value: 'Blue' },
+	{ label: 'Orange', value: 'Orange' },
+	{ label: 'Yellow', value: 'Yellow' },
+	{ label: 'Black', value: 'Black' },
+	{ label: 'White', value: 'White' },
 ];
-const defaultCheckedList = [];
 
+const mainOptions = [
+	{ label: 'Men', value: 'MEN' },
+	{ label: 'Women', value: 'WOMEN' },
+];
+
+const subOptions = [
+	{ label: 'T-Shirts', value: 'Tshirt' },
+	{ label: 'Shirt', value: 'Shirt' },
+	{ label: 'Shorts', value: 'Shorts' },
+	{ label: 'Trousers', value: 'Trousers' },
+];
 const Shop = () => {
 	const dispatch = useDispatch();
-
-	const productList = useSelector((state) => state.productList);
-	const { isLoading, isError, products, isSuccess, message } = productList;
+	const filteredProducts = useSelector(
+		(state) => state.filteredProducts.products
+	);
+	const currentPage = useSelector(
+		(state) => state.filteredProducts.currentPage
+	);
+	const totalPages = useSelector((state) => state.filteredProducts.totalPages);
+	const [page, setPage] = useState(1);
+	const [main, setMain] = useState([]);
+	const [sub, setSub] = useState([]);
+	const [color, setColor] = useState([]);
+	// const { isLoading, isError, products } = filteredProducts;
+	const [priceRange, setPriceRange] = React.useState([1000, 9000]);
 
 	useEffect(() => {
-		dispatch(listProducts());
-	}, [dispatch]);
+		dispatch(
+			fetchFilteredProducts({
+				page,
+				limit: 9,
+				main,
+				sub,
+				color,
+				priceRange,
+			})
+		);
+		dispatch(setCurrentPage(page));
+		window.scrollTo(0, 0);
+	}, [dispatch, page, main, sub, color, priceRange]);
 
-	const [value, setValue] = React.useState([1000, 5000]);
-
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
+	const handlePriceChange = (event, newValue) => {
+		setPriceRange(newValue);
 	};
 
-	const [filters, setFilters] = useState({});
-	const [sort, setSort] = useState('newest');
-
-	const handleFilters = (e) => {
-		const value = e.target.value;
-		setFilters({
-			...filters,
-			[e.target.name]: value,
-		});
+	const valuetext = (value) => {
+		return `$${value}`;
 	};
 
-	const [checkedList, setCheckedList] = useState(defaultCheckedList);
-	const [indeterminate, setIndeterminate] = useState(true);
-	const [checkAll, setCheckAll] = useState(false);
-	const onChange = (list) => {
-		setCheckedList(list);
-		setIndeterminate(!!list.length && list.length < plainOptions.length);
-		setCheckAll(list.length === plainOptions.length);
+	const handlePageChange = (event, value) => {
+		setPage(value);
 	};
-	const onCheckAllChange = (e) => {
-		setCheckedList(e.target.checked ? plainOptions : []);
-		setIndeterminate(false);
-		setCheckAll(e.target.checked);
+
+	const onMainCatChange = (values) => {
+		setMain(values);
+		setPage(1);
+		dispatch(setCurrentPage(1));
+	};
+
+	const onSubCatChange = (values) => {
+		setSub(values);
+		setPage(1);
+		dispatch(setCurrentPage(1));
+	};
+
+	const onColorChange = (values) => {
+		setColor(values);
+		setPage(1);
+		dispatch(setCurrentPage(1));
 	};
 
 	return (
@@ -84,40 +112,35 @@ const Shop = () => {
 				<div className="filters">
 					<div className="categories">
 						<h3>SHOP BY CATEGORIES</h3>
-						<ul>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								T-Shirts
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Casual Shirts
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Formal Shirts
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Trousers
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Shorts
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Accessories
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Underwear & Socks
-							</li>
-							<li>
-								<ArrowForwardIcon className="icon" />
-								Footwears
-							</li>
-						</ul>
+						<Checkbox.Group
+							onChange={onMainCatChange}
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+							}}
+						>
+							{mainOptions.map((option) => (
+								<Checkbox key={option.value} value={option.value}>
+									{option.label}
+								</Checkbox>
+							))}
+						</Checkbox.Group>
+
+						<div className="hl"></div>
+
+						<Checkbox.Group
+							onChange={onSubCatChange}
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+							}}
+						>
+							{subOptions.map((option) => (
+								<Checkbox key={option.value} value={option.value}>
+									{option.label}
+								</Checkbox>
+							))}
+						</Checkbox.Group>
 					</div>
 					<div className="price-range">
 						<h3>FILTER PRICE</h3>
@@ -125,122 +148,63 @@ const Shop = () => {
 							<Box sx={{ width: 200 }}>
 								<Slider
 									getAriaLabel={() => 'Price Range'}
-									value={value}
-									onChange={handleChange}
+									value={priceRange}
+									onChange={handlePriceChange}
 									valueLabelDisplay="auto"
 									getAriaValueText={valuetext}
 									min={1000}
 									max={9000}
 									step={100}
 								/>
+								<div>
+									${priceRange[0]} - ${priceRange[1]}
+								</div>
 							</Box>
 						</ThemeProvider>
 					</div>
 					<div className="colors">
 						<h3>COLOR</h3>
-						<Checkbox
-							indeterminate={indeterminate}
-							onChange={onCheckAllChange}
-							checked={checkAll}
-						>
-							All Colors
-						</Checkbox>
-						<CheckboxGroup
-							options={plainOptions}
-							value={checkedList}
-							onChange={onChange}
+						<Checkbox.Group
+							onChange={onColorChange}
 							style={{
 								display: 'flex',
 								flexDirection: 'column',
-								marginInlineStart: 0,
 							}}
-						/>
-
-						{/* <FormGroup name='color' onChange={handleFilters}>
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='BLACK'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='GREY'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='RED'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='BLUE'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='YELLOW'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='GREEN'
-            />
-          </FormGroup> */}
-					</div>
-					<div className="colors">
-						<h3>SIZE</h3>
-						<select
-							name="size"
-							id=""
-							defaultValue={'DEFAULT'}
-							onChange={handleFilters}
 						>
-							<option value="DEFAULT" disabled>
-								Size
-							</option>
-							<option value="S">S</option>
-							<option value="M">M</option>
-							<option value="L">L</option>
-							<option value="XL">XL</option>
-						</select>
-						{/* <FormGroup name='size' onChange={handleFilters}>
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='S'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='M'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='L'
-            />
-            <FormControlLabel
-              control={<Checkbox style={{ paddingBottom: 0, paddingTop: 0 }} />}
-              label='XL'
-            />
-          </FormGroup> */}
+							{colorOptions.map((option) => (
+								<Checkbox key={option.value} value={option.value}>
+									{option.label}
+								</Checkbox>
+							))}
+						</Checkbox.Group>
 					</div>
-					<div className="colors">
+					{/* <div className="colors">
 						<h3>Sort Products:</h3>
 						<select name="sort" id="" onChange={(e) => setSort(e.target.value)}>
 							<option defaultValue="newest">Newest</option>
 							<option value="asc">Price (asc)</option>
 							<option value="desc">Price (desc)</option>
 						</select>
-					</div>
+					</div> */}
 				</div>
-
-				{isLoading ? (
-					<CircularProgress />
-				) : isError ? (
-					<h3>{Error}</h3>
-				) : (
-					<div className="products">
-						{products.map((product) => (
+				<div className="products">
+					<div className="product_cards">
+						{filteredProducts.map((product) => (
 							<ProductCard product={product} key={product._id} />
 						))}
 					</div>
-				)}
-
-				{/* <Products cat={cat} filters={filters} sort={sort} /> */}
+					<div className="pagination">
+						<ThemeProvider theme={theme}>
+							<Pagination
+								count={10}
+								page={page}
+								onChange={handlePageChange}
+								shape="rounded"
+								color="primary"
+							/>
+						</ThemeProvider>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

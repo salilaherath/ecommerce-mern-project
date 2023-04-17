@@ -19,6 +19,13 @@
 						}
 					}
 				}
+
+				.hl {
+					margin-top: 20px;
+					margin-bottom: 20px;
+					width: 80%;
+					border-bottom: 1px solid gray;
+				}
 			}
 
 			.price-range {
@@ -45,11 +52,31 @@
 				}
 			}
 		}
+		.ant-checkbox-wrapper {
+			margin: 0;
+		}
 
 		.products {
 			display: flex;
-			gap: 20px;
-			flex-wrap: wrap;
+			flex-direction: column;
+			gap: 30px;
+
+			.product_cards {
+				display: flex;
+				row-gap: 20px;
+				column-gap: 40px;
+				flex-wrap: wrap;
+				justify-content: flex-start;
+				align-content: flex-start;
+				align-items: flex-start;
+				height: 1470px;
+			}
+
+			.pagination {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 		}
 	}
 }

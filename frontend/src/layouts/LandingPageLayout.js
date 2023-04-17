@@ -13,6 +13,7 @@ import ProductDetails from '../screens/productDetails/ProductDetails';
 import ProfileScreen from '../screens/profile/Profile';
 import Register from '../screens/register/Register';
 import Shop from '../screens/shop/Shop';
+import OrderSummary from '../screens/orderSummary/OrderSummary';
 
 const LandingPageLayout = () => {
 	return (
@@ -35,6 +36,7 @@ const LandingPageLayout = () => {
 						<Route path="checkout" element={<Checkout />} />
 						<Route path="payment" element={<Payment />} />
 						<Route path="users/profile" element={<ProfileScreen />} />
+						<Route path="orders/:id" element={<OrderSummary />} />
 					</Route>
 				</Routes>
 			</main>

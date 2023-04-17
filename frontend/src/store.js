@@ -6,6 +6,7 @@ import userLogInDataReducer from './features/users/userLogInDataSlice';
 import profileDataReducer from './features/users/profileDataSlice';
 import orderDataReducer from './features/orders/orderDataSlice';
 import latestProductsReducer from './features/products/latestProductsSlice';
+import filteredProductsReducer from './features/products/productsByFiltersDataSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
 		profileDetails: profileDataReducer,
 		orders: orderDataReducer,
 		latestProducts: latestProductsReducer,
+		filteredProducts: filteredProductsReducer,
 	},
 });

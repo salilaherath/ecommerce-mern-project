@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -35,6 +36,21 @@ const Sidebar = () => {
 	const colors = tokens(theme.palette.mode);
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [selected, setSelected] = useState('Dashboard');
+	const [user, setUser] = useState(null);
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+	useEffect(() => {
+		const fetchUserProfile = async () => {
+			const { data } = await axios.get('/api/users/profile', {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			});
+			setUser(data);
+		};
+		fetchUserProfile();
+	}, []);
 
 	return (
 		<Box
@@ -91,7 +107,7 @@ const Sidebar = () => {
 									alt="profile-user"
 									width="100px"
 									height="100px"
-									src={`../images/Salila.jpg`}
+									src={`../images/Admin.png`}
 									style={{ cursor: 'pointer', borderRadius: '50%' }}
 								/>
 							</Box>
@@ -101,7 +117,7 @@ const Sidebar = () => {
 									color={colors.grey[100]}
 									sx={{ m: '10px 0 0 0' }}
 								>
-									Salila Herath
+									{user ? user.name : 'Loading...'}
 								</Typography>
 								<Typography variant="h5" color={colors.greenAccent[500]}>
 									Admin

@@ -36,6 +36,18 @@ const updateProfile = async ({ name, email, password }, config) => {
 	return response.data;
 };
 
+const getUsers = async () => {
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${userInfo.token}`,
+		},
+	};
+	const response = await axios.get(`/api/users/`, config);
+	return response.data;
+};
+
 const getCustomers = async () => {
 	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 	const config = {
@@ -67,5 +79,6 @@ const userService = {
 	updateProfile,
 	getCustomers,
 	getCountOfCustomers,
+	getUsers,
 };
 export default userService;

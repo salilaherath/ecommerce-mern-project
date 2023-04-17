@@ -120,8 +120,13 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/myorders
 // @access  Private
 const getMyOrders = asyncHandler(async (req, res) => {
-	const orders = await Order.find({ user: req.user._id });
-	res.status(200).json(orders);
+	try {
+		const orders = await Order.find({ user: req.user._id });
+		res.json(orders);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: 'Server Error' });
+	}
 });
 
 // @desc    Get all orders

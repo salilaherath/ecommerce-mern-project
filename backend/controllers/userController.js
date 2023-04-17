@@ -94,12 +94,38 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 			_id: updatedUser._id,
 			name: updatedUser.name,
 			email: updatedUser.email,
-			isAdmin: updatedUser.isAdmin,
 			token: generateToken(updatedUser._id),
 		});
 	} else {
 		res.status(404);
 		throw new Error('User not found');
+	}
+});
+
+// @desc    Add or remove Admin
+// @route   PUT /api/users/:userId/makeAdmin
+// @access  Private Admin
+const makeAdmin = asyncHandler(async (req, res) => {
+	const userId = req.params.userId;
+	const { isAdmin } = req.body;
+
+	try {
+		const user = await User.findById(userId);
+
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+
+		user.isAdmin = isAdmin;
+		await user.save();
+
+		const message = isAdmin
+			? 'User has been made an admin'
+			: 'User is no longer an admin';
+		return res.status(200).json({ message });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Server error' });
 	}
 });
 
@@ -173,4 +199,5 @@ export {
 	updateUserProfile,
 	getCustomers,
 	getCountOfCustomers,
+	makeAdmin,
 };

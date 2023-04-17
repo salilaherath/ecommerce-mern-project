@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import Category from '../models/categoryModel.js';
 import path from 'path';
 import { s3 } from '../server.js';
 
@@ -56,18 +57,102 @@ const createProduct = asyncHandler(async (req, res) => {
 // @desc Fetch all products
 // @route GET /api/products
 // @access Public
-// const getProducts = asyncHandler(async (req, res) => {
-// 	const products = await Product.find({});
-// 	res.json(products);
-// });
-
-// @desc Fetch all products with filters
-// @route GET /api/products
-// @access Public
 const getProducts = asyncHandler(async (req, res) => {
 	const products = await Product.find({});
 	res.json(products);
 });
+
+// @desc Fetch all products with filters
+// @route GET /api/productsByFilters
+// @access Public
+const getProductsByCategory = async (req, res) => {
+	const {
+		main,
+		sub,
+		color,
+		page = 1,
+		limit = 9,
+		search = '',
+		sort = 'newest',
+		priceRange,
+	} = req.query;
+
+	const categoryFilter = {};
+	if (main) {
+		categoryFilter.mainCategory = { $in: main.split(',') };
+	}
+	if (sub) {
+		categoryFilter.subCategory = { $in: sub.split(',') };
+	}
+
+	const variationFilter = {};
+	if (color) {
+		variationFilter.color = { $in: color.split(',') };
+	}
+
+	const searchFilter = {};
+	if (search) {
+		searchFilter.name = { $regex: search, $options: 'i' };
+	}
+
+	const priceFilter = {};
+	if (priceRange) {
+		const [minPrice, maxPrice] = priceRange.split(',');
+		priceFilter.price = { $gte: minPrice, $lte: maxPrice };
+	}
+
+	try {
+		const count = await Product.countDocuments({
+			$and: [
+				categoryFilter,
+				{
+					variation: {
+						$elemMatch: variationFilter,
+					},
+				},
+				searchFilter,
+				priceFilter,
+			],
+		});
+
+		let sortOption = {};
+		if (sort === 'asc') {
+			sortOption = { price: 1 };
+		} else if (sort === 'des') {
+			sortOption = { price: -1 };
+		} else {
+			sortOption = { createdAt: -1 };
+		}
+
+		const products = await Product.find({
+			$and: [
+				categoryFilter,
+				{
+					variation: {
+						$elemMatch: variationFilter,
+					},
+				},
+				searchFilter,
+				priceFilter,
+			],
+		})
+			.select('name image price rating')
+			.sort(sortOption)
+			.skip((page - 1) * limit)
+			.limit(limit)
+			.lean();
+
+		res.json({
+			currentPage: parseInt(page),
+			totalPages: Math.ceil(count / limit),
+			totalProducts: count,
+			products,
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: 'Server Error' });
+	}
+};
 
 //get total products
 const getTotalProducts = asyncHandler(async (req, res) => {
@@ -150,4 +235,5 @@ export {
 	deleteProduct,
 	getLatestProducts,
 	getTotalProducts,
+	getProductsByCategory,
 };

@@ -20,11 +20,6 @@ const productSchema = new mongoose.Schema(
 		image: { type: String, required: true },
 		description: { type: String, required: true },
 		brand: { type: String, required: true },
-		// category: {
-		// 	type: mongoose.Schema.Types.ObjectId,
-		// 	ref: 'Category',
-		// 	required: true,
-		// },
 		mainCategory: { type: String, required: true },
 		subCategory: { type: String, required: true },
 		variation: [

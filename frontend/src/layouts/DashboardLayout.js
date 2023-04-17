@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Charts from '../screens/admin/scenes/Charts';
 import AddProducts from '../screens/admin/scenes/AddProducts';
 import Overview from '../screens/admin/scenes/Overview';
-import Customers from '../screens/admin/scenes/Customers';
+import Customers from '../screens/admin/scenes/Users';
 import Sidebar from '../screens/admin/scenes/global/Sidebar';
 import Topbar from '../screens/admin/scenes/global/Topbar';
 import Orders from '../screens/admin/scenes/Orders';
@@ -13,6 +13,7 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import EditProducts from '../screens/admin/scenes/EditProducts';
+import Users from '../screens/admin/scenes/Users';
 
 const DashboardLayout = () => {
 	const [theme, colorMode] = useMode();
@@ -46,7 +47,7 @@ const DashboardLayout = () => {
 										<Route path="products" element={<Products />} />
 										<Route path="addProducts" element={<AddProducts />} />
 										<Route path="editProducts" element={<EditProducts />} />
-										<Route path="users" element={<Customers />} />
+										<Route path="users" element={<Users />} />
 										<Route path="orders" element={<Orders />} />
 										<Route path="charts" element={<Charts />} />
 									</Route>
