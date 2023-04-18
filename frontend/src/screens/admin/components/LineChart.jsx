@@ -2,13 +2,50 @@ import { ResponsiveLine } from '@nivo/line';
 import { useTheme } from '@mui/material';
 import { tokens } from '../theme';
 import { mockLineData as data } from '../../../data/mockData';
+import { useState, useEffect } from 'react';
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
+	const [monthlyRevenue, setMonthlyRevenue] = useState([]);
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+	useEffect(() => {
+		async function fetchMonthlyRevenue() {
+			try {
+				const response = await fetch('/api/orders/monthly', {
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${userInfo.token}`,
+					},
+				});
+				const data = await response.json();
+				const monthlyRevenueData = Object.keys(data.monthlyRevenue).map(
+					(key) => ({
+						x: new Date(0, parseInt(key), 1).toLocaleString('default', {
+							month: 'long',
+						}),
+						y: data.monthlyRevenue[key],
+					})
+				);
+				setMonthlyRevenue(monthlyRevenueData);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchMonthlyRevenue();
+	}, []);
 
 	return (
 		<ResponsiveLine
+			// data={[
+			// 	{
+			// 		id: '2023',
+			// 		color: tokens('dark').redAccent[200],
+			// 		data: monthlyRevenue,
+			// 	},
+			// ]}
 			data={data}
 			theme={{
 				axis: {

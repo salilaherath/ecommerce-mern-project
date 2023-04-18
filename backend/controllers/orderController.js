@@ -163,6 +163,37 @@ const getAllOrders = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc    Get monthly revenue
+// @route   GET /api/orders/monthly
+// @access  Private/Admin
+const getMonthlyOrders = asyncHandler(async (req, res) => {
+	try {
+		const orders = await Order.find();
+
+		const monthlyRevenue = {};
+
+		orders.forEach((order) => {
+			const month = order.createdAt.getMonth();
+			if (!monthlyRevenue[month]) {
+				monthlyRevenue[month] = order.totalPrice;
+			} else {
+				monthlyRevenue[month] += order.totalPrice;
+			}
+		});
+
+		const data = Object.keys(monthlyRevenue).map((month) => {
+			return {
+				x: new Date(0, month).toLocaleString('default', { month: 'long' }),
+				y: monthlyRevenue[month],
+			};
+		});
+
+		res.status(200).json({ data });
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
 //GET Latest 8 orders
 const getLatestOrders = asyncHandler(async (req, res) => {
 	const latestOrders = await Order.find().sort({ createdAt: -1 }).limit(8);
@@ -177,4 +208,5 @@ export {
 	getAllOrders,
 	updateOrderStatus,
 	getLatestOrders,
+	getMonthlyOrders,
 };

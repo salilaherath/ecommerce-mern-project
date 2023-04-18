@@ -13,6 +13,7 @@ import {
 	fetchFilteredProducts,
 	setCurrentPage,
 } from '../../features/products/productsByFiltersDataSlice';
+import axios from 'axios';
 
 const theme = createTheme({
 	palette: {
@@ -45,17 +46,18 @@ const mainOptions = [
 	{ label: 'Women', value: 'WOMEN' },
 ];
 
-const subOptions = [
-	{ label: 'T-Shirts', value: 'Tshirt' },
-	{ label: 'Shirt', value: 'Shirt' },
-	{ label: 'Shorts', value: 'Shorts' },
-	{ label: 'Trousers', value: 'Trousers' },
-];
+// const subOptions = [
+// 	{ label: 'T-Shirts', value: 'Tshirt' },
+// 	{ label: 'Shirt', value: 'Shirt' },
+// 	{ label: 'Shorts', value: 'Shorts' },
+// 	{ label: 'Trousers', value: 'Trousers' },
+// ];
 const Shop = () => {
 	const dispatch = useDispatch();
 	const filteredProducts = useSelector(
 		(state) => state.filteredProducts.products
 	);
+	const [subOptions, setSubOptions] = useState([]);
 	const currentPage = useSelector(
 		(state) => state.filteredProducts.currentPage
 	);
@@ -99,10 +101,22 @@ const Shop = () => {
 		setPage(value);
 	};
 
-	const onMainCatChange = (values) => {
-		setMain(values);
-		setPage(1);
-		dispatch(setCurrentPage(1));
+	const onMainCatChange = async (values) => {
+		try {
+			const response = await axios.get(`/api/category/${values[0]}`);
+			const subCategories = response.data.subCategories;
+			console.log(subCategories);
+			if (Array.isArray(subCategories)) {
+				setSubOptions(subCategories);
+			} else {
+				setSubOptions([]);
+			}
+			setMain(values);
+			setPage(1);
+			dispatch(setCurrentPage(1));
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const onSubCatChange = (values) => {
@@ -148,7 +162,7 @@ const Shop = () => {
 						>
 							{subOptions.map((option) => (
 								<Checkbox key={option.value} value={option.value}>
-									{option.label}
+									{option.name}
 								</Checkbox>
 							))}
 						</Checkbox.Group>

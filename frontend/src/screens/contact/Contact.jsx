@@ -1,7 +1,11 @@
 import './contact.scss';
 
 const Contact = () => {
-  return <div>Contact</div>;
+	return (
+		<div className="contact">
+			<h2>CONTACT US</h2>
+		</div>
+	);
 };
 
 export default Contact;

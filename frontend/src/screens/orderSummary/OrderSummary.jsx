@@ -71,8 +71,10 @@ const OrderSummary = () => {
 					</p>
 					<h3>Order Status</h3>
 					<p>
-						{order.orderStatus.charAt(0).toUpperCase() +
-							order.orderStatus.slice(1)}
+						{order.isDelivered
+							? 'Completed'
+							: order.orderStatus.charAt(0).toUpperCase() +
+							  order.orderStatus.slice(1)}
 					</p>
 				</div>
 				<div className="orderItems">

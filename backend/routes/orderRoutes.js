@@ -3,6 +3,7 @@ import {
 	addOrderItems,
 	getAllOrders,
 	getLatestOrders,
+	getMonthlyOrders,
 	getMyOrders,
 	getOrderByID,
 	updateOrderStatus,
@@ -17,6 +18,7 @@ router
 	.post(protect, addOrderItems)
 	.get(protect, isAdmin, getAllOrders);
 router.route('/latest').get(protect, isAdmin, getLatestOrders);
+router.route('/monthly').get(protect, isAdmin, getMonthlyOrders);
 router.route('/myorders').get(protect, getMyOrders);
 router.route('/:id/status').put(protect, isAdmin, updateOrderStatus);
 router.route('/:id/deliver').put(protect, updateOrderToDelivered);
